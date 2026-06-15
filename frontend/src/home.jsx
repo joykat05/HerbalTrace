@@ -9,22 +9,60 @@ export default function Home(){
         <>
         <div className="relative m-4">
             <img
-                className="w-305 rounded-2xl"
+                className="w-305 max-md:w-full max-md:h-[60vh] object-cover rounded-2xl block"
                 src="/content/home-photo-crop.jpg"
+                alt="hero"
             />
 
-            <div className="absolute top-[40%] left-1/2 w-250 text-center -translate-x-1/2 -translate-y-1/2 rounded-xl text-white  bg-green-400/60 p-4 hover:scale-105 transition duration-200 ease-out">
-                <p className="text-4xl font-prompt">
-                HerbalTrace : Batch Traceability & Management System
+            <div className="absolute top-[40%]  max-md:top-[50%]   left-1/2 w-250 max-md:w-[85%] text-center -translate-x-1/2 -translate-y-1/2 rounded-xl  text-white   bg-green-400/60 p-4 max-md:p-2 hover:scale-105 transition duration-200 ease-out">
+                <p className="
+                    text-4xl 
+                    max-md:text-base 
+                    leading-tight 
+                    font-prompt
+                ">
+                    HerbalTrace : Batch Traceability & Management System
                 </p>
-                <p className='text-2xl font-prompt'>Track. Verify. Deliver. — all in one place</p>
-                <button className="m-4 font-prompt border-2 border-white p-2 rounded-lg text-2xl transition duration-300 ease-out hover:bg-white hover:text-green-300 hover:scale-110">Start Now
-                    <span className="material-symbols-outlined text-pink-500 ">local_florist</span>
+                <p className="
+                    text-2xl 
+                    max-md:text-xs 
+                    font-prompt
+                ">
+                    Track. Verify. Deliver. — all in one place
+                </p>
+
+                <button className="
+                    m-4 
+                    max-md:m-2
+                    mx-auto  
+                    max-md:mx-auto
+                    font-prompt 
+                    border-2 border-white 
+                    p-2 
+                    max-md:px-2 max-md:py-1
+                    rounded-lg 
+                    text-2xl 
+                    max-md:text-xs
+                    flex items-center justify-center gap-1   
+                    transition duration-300 ease-out 
+                    hover:bg-white hover:text-green-300 hover:scale-110
+                ">
+                    Start Now
+                    <span className="
+                        material-symbols-outlined 
+                        text-pink-500 
+                        text-[28px] 
+                        max-md:text-[16px]   
+                        leading-none
+                    ">
+                        local_florist
+                    </span>
                 </button>
             </div>
-            </div>
-            <Features />
-            <About />
+        </div>
+
+        <Features />
+        <About />
         </>
     );
 }

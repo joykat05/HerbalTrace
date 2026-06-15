@@ -6,8 +6,6 @@ function MainLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-
-      {/* This grows to push footer down */}
       <main className="flex-grow">
         <Outlet />
       </main>
