@@ -1,6 +1,8 @@
 import './app.css';
 import Navbar from './components/navbar.jsx';
 import Features from './components/feature.jsx';
+import About from './about.jsx';
+import Footer from './components/footer.jsx';
 
 export default function Home(){
     return(
@@ -12,7 +14,7 @@ export default function Home(){
                 src="/content/home-photo-crop.jpg"
             />
 
-            <div className="absolute top-[25%] left-1/2 w-250 text-center -translate-x-1/2 -translate-y-1/2r rounded-xl text-white  bg-green-400/60 p-4">
+            <div className="absolute top-[40%] left-1/2 w-250 text-center -translate-x-1/2 -translate-y-1/2 rounded-xl text-white  bg-green-400/60 p-4">
                 <p className="text-4xl font-prompt">
                 HerbalTrace : Batch Traceability & Management System
                 </p>
@@ -23,7 +25,8 @@ export default function Home(){
             </div>
             </div>
             <Features />
-            
+            <About />
+            <Footer />
         </>
     );
 }

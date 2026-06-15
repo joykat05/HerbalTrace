@@ -3,10 +3,10 @@ import Card from './card';
 export default function Features(){
     return(
         <>
-        <div className='m-10'>
+        <div className='m-10 bg-gray-100 p-4 rounded-2xl'>
             
-            <h1 className='font-prompt text-5xl text-green-300 hover:text-pink-300 items-baseline'>
-                <span class="material-symbols-outlined mr-2" style={{fontSize:"40px"}}>yard</span>
+            <h1 className='font-prompt text-5xl text-green-300 hover:text-pink-300 m-5 flex items-center gap-2'>
+                <span class="material-symbols-outlined " style={{fontSize:"40px"}}>yard</span>
                 Features</h1>
             <div className="grid grid-cols-2 gap-10">
 
