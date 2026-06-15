@@ -3,6 +3,7 @@ import Card from './components/card'
 
 export default function About(){
     return(
+        <>
         <div className='m-10 bg-pink-100 p-4 rounded-2xl'>
         <h1 className="font-prompt text-4xl text-pink-300 m-5 flex items-center gap-2 hover:text-green-300">
             <span className="material-symbols-outlined" style={{fontSize :"40px"}}>info</span>
@@ -20,5 +21,6 @@ export default function About(){
         </Card>
         </div>
         </div>
+        </>
     )
 }

@@ -16,7 +16,9 @@ function Navbar() {
         <Link to="/about">
         <button className=" hover:text-green-600 text-white p-2 rounded-lg">About</button>
         </Link>
+        <Link to="/login">
         <button className=" hover:text-green-600 text-white p-2 rounded-lg">Log in</button>
+        </Link>
       </div>
       <div className="text-2xl ml-auto ">
         <span className="material-symbols-outlined hover:text-green-600"   style={{ fontSize: "40px" }}>account_circle</span>

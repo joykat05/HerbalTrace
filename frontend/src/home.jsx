@@ -7,14 +7,13 @@ import Footer from './components/footer.jsx';
 export default function Home(){
     return(
         <>
-        <Navbar />
         <div className="relative m-4">
             <img
                 className="w-305 rounded-2xl"
                 src="/content/home-photo-crop.jpg"
             />
 
-            <div className="absolute top-[40%] left-1/2 w-250 text-center -translate-x-1/2 -translate-y-1/2 rounded-xl text-white  bg-green-400/60 p-4">
+            <div className="absolute top-[40%] left-1/2 w-250 text-center -translate-x-1/2 -translate-y-1/2 rounded-xl text-white  bg-green-400/60 p-4 hover:scale-105 transition duration-200 ease-out">
                 <p className="text-4xl font-prompt">
                 HerbalTrace : Batch Traceability & Management System
                 </p>
@@ -26,7 +25,6 @@ export default function Home(){
             </div>
             <Features />
             <About />
-            <Footer />
         </>
     );
 }

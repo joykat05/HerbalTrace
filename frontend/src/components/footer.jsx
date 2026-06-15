@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 export default function Footer(){
     return(
         <>
-        <div className="bg-green-300 text-white p-2 h-1/2 ml-4 mr-4 mt-2 mb-2 rounded-4xl text-center font-prompt">
+        <div className="bg-green-300 text-white p-2  ml-4 mr-4 mt-2 mb-2 rounded-4xl text-center font-prompt">
         <div className='flex gap-4 items-center justify-center mt-2 mb-0 p-0'>
             <a 
                 href="https://github.com/joykat05/HerbalTrace.git" 
