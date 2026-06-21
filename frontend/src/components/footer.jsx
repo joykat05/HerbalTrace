@@ -11,6 +11,8 @@ export default function Footer(){
             rounded-4xl 
             text-center 
             font-prompt
+            dark:bg-green-900
+            dark:text-green-200
         ">
             <div className="
                 flex items-center justify-center gap-4 

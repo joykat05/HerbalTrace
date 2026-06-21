@@ -1,13 +1,19 @@
 import './app.css'
-import Navbar from './components/navbar'
-import Footer from './components/footer'
 import Card from './components/card'
 
 export default function Login(){
     return(
         <>
-        <div className='justify-center items-center flex m-10'>
-        <Card title="Log In">
+        <div className="justify-center items-center flex m-10 p-4 bg-gray-100 rounded-2xl">
+        <Card title={
+                <div className="flex items-center gap-2">
+                    Log In
+                <span className="material-symbols-outlined bg-green-300 text-white rounded-full p-2 text-[40px]">
+                    login
+                </span>
+                
+                </div>
+            }>
             <form className=" p-6 w-full">
             <input
                 type="email"

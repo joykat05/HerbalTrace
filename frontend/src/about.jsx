@@ -8,6 +8,7 @@ export default function About(){
             m-10 
             max-md:m-2 
             bg-pink-100 
+            dark:bg-pink-800/40
             p-4 
             max-md:px-3 max-md:py-2 
             rounded-2xl
@@ -44,6 +45,7 @@ export default function About(){
                 text-2xl 
                 max-md:text-sm 
                 font-prompt 
+                dark:text-green-400
                 text-green-600
             '>
                 <br/>
