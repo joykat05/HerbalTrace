@@ -16,13 +16,13 @@ export default function Demo() {
 
       <Button label="Open Modal" onClick={() => setOpen(true)} />
 
-        <Button label="Show Toast" onClick={() => showToast("Saved !", "success")} />
+        <Button label="Show Toast" onClick={() => showToast("this is an example toast", "success")} />
       
        <h2 className="text-3xl font-prompt text-green-300">Loader :</h2>
       <Loader size={50} />
 
       <Modal isOpen={open} onClose={() => setOpen(false)}>
-        <p>This matches your green glass UI ✨</p>
+        <p>This is an example model.</p>
       </Modal>
 
     </div>

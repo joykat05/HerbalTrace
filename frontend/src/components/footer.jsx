@@ -18,7 +18,7 @@ export default function Footer(){
                 flex items-center justify-center gap-4 
                 mt-2 mb-0 p-0
                 max-md:gap-2
-                max-md:text-sm
+                max-md:text-xs
             ">
                 <a 
                     href="https://github.com/joykat05/HerbalTrace.git" 
