@@ -8,14 +8,18 @@ import { Link } from 'react-router';
 export default function Home(){
     return(
         <>
+        
         <div className="relative m-4">
-            <img
-                className="w-305 max-md:w-full max-md:h-[60vh] object-cover rounded-2xl block dark:brightness-50"
-                src="/content/home-photo-crop.jpg"
-                alt="hero"
-            />
+            <video
+            className="w-305 h-150 max-md:w-full max-md:h-[60vh] object-cover rounded-2xl block brightness-60 dark:brightness-65"
+            src="/content/hero-video-2.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+        />
 
-            <div className="absolute top-[40%]  max-md:top-[50%]   left-1/2 w-250 max-md:w-[85%] text-center -translate-x-1/2 -translate-y-1/2 rounded-xl  text-white   bg-green-400/40 p-4 max-md:p-2 hover:scale-105 transition duration-200 ease-out
+            <div className="absolute top-[40%]  max-md:top-[50%]   left-1/2 w-250 max-md:w-[85%] text-center -translate-x-1/2 -translate-y-1/2 rounded-xl  text-white  bg-green-400/40 p-4 max-md:p-2 hover:scale-105 transition duration-200 ease-out
             dark:bg-green-900/60
             dark:text-green-200
             ">

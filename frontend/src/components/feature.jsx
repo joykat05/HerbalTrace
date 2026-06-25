@@ -7,8 +7,8 @@ export default function Features() {
             <div className='
                 m-10 
                 max-md:m-2 
-                bg-gray-100 
-                dark:bg-gray-800
+                bg-black/60 
+                dark:bg-gray-900/60
                 p-4 
                 max-md:px-3 max-md:py-2   
                 rounded-2xl
@@ -17,7 +17,7 @@ export default function Features() {
                     font-prompt 
                     text-5xl 
                     max-md:text-2xl 
-                    text-green-300 
+                    text-green-400 
                     hover:text-pink-300 
                     m-5 
                     max-md:m-2 

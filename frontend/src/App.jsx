@@ -7,6 +7,7 @@ import MainLayout from './mainlayout'
 import Login from './login'
 import Signup from './signup'
 import Demo from './demo'
+import Dashboard from './dashboard'
 
 function App({ dark, setDark }) {
   return (
@@ -19,6 +20,7 @@ function App({ dark, setDark }) {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="demo" element={<Demo />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

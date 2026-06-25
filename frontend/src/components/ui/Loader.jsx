@@ -2,19 +2,22 @@
  * Loader Component
  * @param {number} size
  */
-export default function Loader({ size = 40 }) {
+export default function Loader({ size = 50 }) {
   return (
     <div className="flex justify-center items-center">
-      <div
-        style={{ width: size, height: size }}
+      <span
+        style={{ fontSize : size }}
         className="
-          border-4
-          border-white/30
-          border-t-green-400
-          rounded-full
-          animate-spin
-        "
-      />
+        material-symbols-outlined
+        text-pink-200
+        animate-pulse
+        transition duration-150 ease-in-out
+        dark:brightness-50
+        ">
+          local_florist
+        </span>
+        <p className="text-pink-200 font-prompt animate-pulse transition duration-150 ease-in-out dark:brightness-50" style={{ fontSize : size/2 }}>Loading...</p>
+
     </div>
   );
 }

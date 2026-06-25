@@ -7,8 +7,8 @@ export default function About(){
         <div className='
             m-10 
             max-md:m-2 
-            bg-pink-100 
-            dark:bg-pink-800/40
+            bg-pink-200 
+            dark:bg-pink-800/50
             p-4 
             max-md:px-3 max-md:py-2 
             rounded-2xl
@@ -18,7 +18,7 @@ export default function About(){
             font-prompt 
             text-4xl 
             max-md:text-2xl 
-            text-pink-300 
+            text-pink-400 
             m-5 max-md:m-2 
             flex items-center gap-2 
             hover:text-green-300
