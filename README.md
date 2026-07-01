@@ -14,7 +14,7 @@ Add the required environment variables:
 
 ```env
 PORT=5000
-MONGODB_URI=your_database_url
+MONGODB_STRING=your_database_url
 JWT_SECRET=your_secret_key
 ```
 
