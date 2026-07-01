@@ -21,7 +21,8 @@ export default function About(){
             text-pink-400 
             m-5 max-md:m-2 
             flex items-center gap-2 
-            hover:text-green-300
+            hover:text-green-700
+            dark:hover:text-green-300
         ">
             <span 
                 className="material-symbols-outlined" 

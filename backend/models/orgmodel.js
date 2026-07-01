@@ -1,5 +1,4 @@
-// models/Organization.js
-const mongoose = require("mongoose");
+const db = require("mongoose");
 
 
 const orgSchema = new mongoose.Schema({
@@ -16,4 +15,4 @@ const orgSchema = new mongoose.Schema({
 }
 });
 
-module.exports = mongoose.model("Organization", orgSchema);
+module.exports = db.model("Organization", orgSchema);

@@ -42,7 +42,7 @@ export default function Login() {
       // small delay so loader is visible (optional UX polish)
       await new Promise((r) => setTimeout(r, 800));
 
-      // navigate("/dashboard");
+      navigate("/dashboard");
     } catch (error) {
         await new Promise((r) => setTimeout(r, 800));
       console.error(error);
@@ -68,7 +68,7 @@ export default function Login() {
       >
         {/* loader without destroying form */}
         {isSubmitting && (
-          <div className="flex justify-center my-4">
+          <div className="flex justify-center my-4 transition-all duration-150">
             <Loader size={80} />
           </div>
         )}

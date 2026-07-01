@@ -10,7 +10,7 @@ function Card({ title, description, children }) {
       rounded-2xl 
       max-w-lg w-full 
       max-md:max-w-full   
-      bg-white 
+      bg-white/90 
       shadow-md 
       space-y-3 max-md:space-y-1
       hover:scale-105

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const db = require("mongoose");
 
 const batchSchema = new mongoose.Schema({
 
@@ -13,8 +13,7 @@ const batchSchema = new mongoose.Schema({
   },
 
   batchNumber: {
-    type: String,
-    unique: true
+    type: String
   },
 
   yield: {
@@ -42,5 +41,9 @@ const batchSchema = new mongoose.Schema({
   }
 
 }, { timestamps: true });
+batchSchema.index(
+  { organization: 1, batchNumber: 1 },
+  { unique: true }
+);
 
-module.exports = mongoose.model("Batch", batchSchema);
+module.exports = db.model("Batch", batchSchema);

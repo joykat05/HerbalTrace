@@ -7,7 +7,7 @@ function Navbar({ dark, setDark }) {
   return (
     <div
       data-theme={dark ? "dark" : "light"}
-      className="bg-green-300 dark:bg-green-900 text-white dark:text-green-200 p-2 max-md:p-1 ml-4 mr-4 mt-2 flex items-center justify-between rounded-4xl font-prompt"
+      className="bg-green-300/90 dark:bg-green-900/90 text-green-800 dark:text-green-200 p-2 max-md:p-1 ml-4 mr-4 mt-2 flex items-center justify-between rounded-4xl font-prompt"
     >
       {/* LEFT */}
       <div className="flex items-center shrink-0">
