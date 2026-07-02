@@ -9,6 +9,7 @@ import Signup from './signup'
 import Demo from './demo'
 import Dashboard from './dashboard'
 import Batchform from './batchform'
+import Batches from './batches'
 
 function App({ dark, setDark }) {
   return (
@@ -23,6 +24,7 @@ function App({ dark, setDark }) {
           <Route path="demo" element={<Demo />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="addbatch" element={<Batchform />} />
+          <Route path="batches" element={<Batches />} />
         </Route>
       </Routes>
     </BrowserRouter>

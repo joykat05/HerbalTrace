@@ -20,7 +20,7 @@ const generateBatchNumber = async (orgId) => {
 // ✅ CREATE BATCH
 router.post("/", async (req, res, next) => {
   try {
-    const { name, plant, yield } = req.body;
+    const { name, plant, yield, productionDate } = req.body;
 
     if (!name || !plant || !yield?.quantity || !yield?.unit) {
       return res.status(400).json({
@@ -31,18 +31,19 @@ router.post("/", async (req, res, next) => {
     const batchNumber = await generateBatchNumber(req.user.orgId);
 
     const batch = await Batch.create({
-      name,
-      plant,
-      batchNumber,
-      yield,
+  name,
+  plant,
+  batchNumber,
+  yield,
 
-      // Initialize batch state
-      availableQuantity: yield.quantity,
-      status: "pending",
+  productionDate: productionDate || Date.now(),
 
-      organization: req.user.orgId,
-      createdBy: req.user.userId
-    });
+  availableQuantity: yield.quantity,
+  status: "pending",
+
+  organization: req.user.orgId,
+  createdBy: req.user.userId
+});
 
     res.status(201).json(batch);
 
@@ -90,14 +91,21 @@ router.get("/:id", async (req, res,next) => {
 
 
 // ✅ UPDATE
-router.patch("/:id", async (req, res,next) => {
+router.patch("/:id", async (req, res, next) => {
   try {
+    const updateData = { ...req.body };
+
+    // If yield quantity is updated, keep availableQuantity in sync
+    if (updateData.yield?.quantity !== undefined) {
+      updateData.availableQuantity = updateData.yield.quantity;
+    }
+
     const updated = await Batch.findOneAndUpdate(
       {
         _id: req.params.id,
-        organization: req.user.orgId
+        organization: req.user.orgId,
       },
-      req.body,
+      updateData,
       { new: true }
     );
 
@@ -106,7 +114,6 @@ router.patch("/:id", async (req, res,next) => {
     }
 
     res.json(updated);
-
   } catch (err) {
     next(err);
   }
@@ -136,29 +143,31 @@ router.delete("/:id", async (req, res,next) => {
 
 
 // 🔍 SEARCH / FILTER
-router.get("/search/filter", async (req, res,next) => {
+router.get("/search/filter", async (req, res, next) => {
   try {
-    const { plant, startDate, endDate } = req.query;
+    const { search, startDate, endDate } = req.query;
 
     let filter = {
-      organization: req.user.orgId
+      organization: req.user.orgId,
     };
 
-    if (plant) {
-      filter.plant = new RegExp(plant, "i");
+    if (search) {
+      filter.$or = [
+        { batchNumber: new RegExp(search, "i") },
+        { plant: new RegExp(search, "i") },
+      ];
     }
 
     if (startDate && endDate) {
       filter.productionDate = {
         $gte: new Date(startDate),
-        $lte: new Date(endDate)
+        $lte: new Date(endDate),
       };
     }
 
     const batches = await Batch.find(filter).sort({ createdAt: -1 });
 
     res.json(batches);
-
   } catch (err) {
     next(err);
   }

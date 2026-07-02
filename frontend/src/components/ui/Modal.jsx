@@ -10,9 +10,10 @@ export default function Modal({ isOpen, onClose, children }) {
   return (
     <div className="
       fixed inset-0
-      bg-black/40
+      bg-black/60
       flex items-center justify-center
       z-50
+      
     ">
       <div className="
         bg-green-400/30
@@ -21,8 +22,9 @@ export default function Modal({ isOpen, onClose, children }) {
         rounded-2xl
         text-white
         w-[90%] max-w-md
-        shadow-xl
+        
         animate-fadeIn
+        shadow-[0px_0px_24px_5px_rgba(90,181,100,1)]
       ">
         {children}
       </div>
