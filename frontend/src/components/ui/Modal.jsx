@@ -25,20 +25,6 @@ export default function Modal({ isOpen, onClose, children }) {
         animate-fadeIn
       ">
         {children}
-
-        <button
-          onClick={onClose}
-          className="
-            mt-4
-            border border-white
-            px-3 py-1
-            rounded-lg
-            hover:bg-white hover:text-green-400
-            transition
-          "
-        >
-          Close
-        </button>
       </div>
     </div>
   );

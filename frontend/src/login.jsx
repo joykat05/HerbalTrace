@@ -36,7 +36,8 @@ export default function Login() {
         showToast(result.message || "Invalid Credentials", "error");
         return;
       }
-
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("user", JSON.stringify(result.user));
       showToast("Login Successful!", "success");
 
       // small delay so loader is visible (optional UX polish)

@@ -5,11 +5,25 @@ export default function Sidebar(){
     return(
         <>
 
-        <div className="flex gap-2 items-start m-5"> 
+        <div className="sticky top-0 h-screen flex gap-2 p-5 items-start"> 
         <div className= {`h-full bg-green-950/75 dark:bg-green-950/80 rounded-2xl text-green-300 transition-all duration-700 overflow-hidden flex-col flex ${show? "w-64" : "w-0" }`} >
         <div className="flex-1">
+             <p className="font-prompt text-2xl p-2 mt-2 ">
+            <Link to="/dashboard" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200 ">
+        <span className="material-symbols-outlined "
+            style = {{fontSize : "30px"}}>
+                dashboard
+            </span>
+        Dashboard</Link></p>
+         <p className="font-prompt text-2xl p-2 mt-2 ">
+            <Link to="/batches" className="flex items-start gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200 ">
+        <span className="material-symbols-outlined "
+            style = {{fontSize : "30px"}}>
+                list_alt_check
+            </span>
+        Batch Mangement</Link></p>
             <p className="font-prompt text-2xl p-2 mt-2 ">
-            <Link to="/" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200 ">
+            <Link to="/addbatch" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200 ">
         <span className="material-symbols-outlined "
             style = {{fontSize : "30px"}}>
                 add_circle
