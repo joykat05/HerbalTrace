@@ -18,20 +18,28 @@ const generateBatchNumber = async (orgId) => {
 
 
 // ✅ CREATE BATCH
-router.post("/", async (req, res,next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { name, plant, yield } = req.body;
 
-    if (!name || !plant) {
-      return res.status(400).json({ message: "Name and plant required" });
+    if (!name || !plant || !yield?.quantity || !yield?.unit) {
+      return res.status(400).json({
+        message: "Name, plant and yield are required."
+      });
     }
+
     const batchNumber = await generateBatchNumber(req.user.orgId);
 
     const batch = await Batch.create({
       name,
       plant,
-      yield, // ✅ now consistent with schema
-     batchNumber,
+      batchNumber,
+      yield,
+
+      // Initialize batch state
+      availableQuantity: yield.quantity,
+      status: "pending",
+
       organization: req.user.orgId,
       createdBy: req.user.userId
     });
@@ -42,7 +50,6 @@ router.post("/", async (req, res,next) => {
     next(err);
   }
 });
-
 
 
 // ✅ GET ALL

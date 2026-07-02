@@ -1,4 +1,4 @@
-const db = require("mongoose");
+const mongoose = require("mongoose");
 
 const batchSchema = new mongoose.Schema({
 
@@ -20,9 +20,47 @@ const batchSchema = new mongoose.Schema({
     quantity: Number,
     unit: {
       type: String,
-      enum: ["kg", "liters"]
+      enum: ["ml"]
     }
   },
+
+  availableQuantity: {
+    type: Number
+  },
+
+  status: {
+    type: String,
+    enum: [
+      "pending",
+      "certified",
+      "partially_dispatched",
+      "dispatched"
+    ],
+    default: "pending"
+  },
+
+  certificate: {
+    pdf: {
+      type: String
+    },
+    labName: {
+      type: String
+    },
+    issuedDate: {
+      type: Date
+    },
+    expiryDate: {
+      type: Date
+    },
+    uploadedAt: {
+      type: Date
+    }
+  },
+
+  dispatches: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Dispatch"
+  }],
 
   productionDate: {
     type: Date,
@@ -41,9 +79,10 @@ const batchSchema = new mongoose.Schema({
   }
 
 }, { timestamps: true });
+
 batchSchema.index(
   { organization: 1, batchNumber: 1 },
   { unique: true }
 );
 
-module.exports = db.model("Batch", batchSchema);
+module.exports = mongoose.model("Batch", batchSchema);
