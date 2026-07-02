@@ -3,17 +3,54 @@ import Card from "./components/card";
 import { Link } from "react-router";
 import StatusChart from "./components/StatusChart";
 import YieldChart from "./components/linechart";
+import { useEffect, useState } from "react";
+import { Loader } from "./components/ui";
 export default function Dashboard(){
+    const [dashboard, setDashboard] = useState(null);
+    useEffect(() => {
+    const fetchDashboard = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch("http://localhost:5000/batches/dashboard", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch dashboard");
+            }
+
+            const data = await response.json();
+            setDashboard(data);
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+        fetchDashboard();
+    }, []);
+        if (!dashboard) {
+            return (<div className="flex justify-center my-4 transition-all duration-150 bg-white/90 rounded-4xl m-5 h-screen">
+            <Loader size={200}/>
+          </div>);
+        }else{
     return(
         <>
         <div className="flex gap-4">
         <Sidebar />
         <div className="flex-1 ">
+            <div className="rounded-2xl bg-linear-to-r from-green-300/80 via-green-300/80 to-white/80 p-8 m-5">
+            <p className="text-green-700 text-4xl font-prompt">Welcome, {dashboard.user.name}</p>
+            <p className="text-green-700 text-2xl font-prompt">Orgaization: {dashboard.user.organization}</p>
+            </div>
             <div className="flex gap-3">
                   <Card title={
                     <>
                     Total Batches
-                    <p className="text-pink-400 text-3xl max-md:text-sm">50</p>
+                    <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.totalBatches}</p>
                     </>
                 }
                 description={
@@ -24,8 +61,8 @@ export default function Dashboard(){
                 </Card>
                 <Card title={
                     <>
-                    Total Batches
-                    <p className="text-pink-400 text-3xl max-md:text-sm">50</p>
+                    Average Yield
+                    <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.averageYield} ml</p>
                     </>
                 }
                 description={
@@ -36,8 +73,8 @@ export default function Dashboard(){
                 </Card>
                   <Card title={
                     <>
-                    Total Batches
-                    <p className="text-pink-400 text-3xl max-md:text-sm">50</p>
+                    Total Available Quantity
+                    <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.availableQuantity} ml</p>
                     </>
                 }
                 description={
@@ -48,7 +85,7 @@ export default function Dashboard(){
                 </Card>
             </div>
             <div>
-               <StatusChart />
+               <StatusChart data={dashboard.statusChart} />
             </div>
             <div className="grid grid-cols-7 gap-2 m-4">
                 <div className="col-span-2 bg-linear-to-b from-black/70 to-green-900  rounded-2xl text- font-prompt p-4 inset-shadow-sm inset-shadow-green-300">
@@ -79,12 +116,12 @@ export default function Dashboard(){
                 </div>
                 <div className="col-span-5 ml-2">
                    
-                    <YieldChart />
+                    <YieldChart data={dashboard.yieldChart} />
                 </div>
                 
             </div>
         </div>
         </div>
         </>
-    );
+    );}
 }

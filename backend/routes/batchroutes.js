@@ -52,6 +52,107 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// GET /batches/dashboard
+router.get("/dashboard", async (req, res, next) => {
+  try {
+    // Fetch user & organization
+    const org = await Organization.findById(req.user.orgId).select("name");
+    const User = require("../models/usermodal"); // adjust path if needed
+
+    const user = await User.findById(req.user.userId).select("name");
+
+    // Fetch all batches for this organization
+    const batches = await Batch.find({
+      organization: req.user.orgId,
+    });
+
+    // ==========================
+    // KPI Calculations
+    // ==========================
+
+    const totalBatches = batches.length;
+
+    const totalYield = batches.reduce(
+      (sum, batch) => sum + (batch.yield?.quantity || 0),
+      0
+    );
+
+    const averageYield =
+      totalBatches > 0 ? totalYield / totalBatches : 0;
+
+    const availableQuantity = batches.reduce(
+      (sum, batch) => sum + (batch.availableQuantity || 0),
+      0
+    );
+
+    // ==========================
+    // Status Chart
+    // ==========================
+
+    const statusCounts = {
+      pending: 0,
+      certified: 0,
+      partially_dispatched: 0,
+      dispatched: 0,
+    };
+
+    batches.forEach((batch) => {
+      statusCounts[batch.status]++;
+    });
+
+    const statusChart = [
+      {
+        name: "Pending",
+        value: statusCounts.pending,
+      },
+      {
+        name: "Certificate Ready",
+        value: statusCounts.certified,
+      },
+      {
+        name: "Partially Dispatched",
+        value: statusCounts.partially_dispatched,
+      },
+      {
+        name: "Completed",
+        value: statusCounts.dispatched,
+      },
+    ];
+
+    // ==========================
+    // Yield Chart
+    // ==========================
+
+    const yieldChart = batches.map((batch) => ({
+      name: batch.plant,
+      value: batch.yield?.quantity || 0,
+    }));
+
+    // ==========================
+    // Final Response
+    // ==========================
+
+    res.json({
+      user: {
+        name: user?.name,
+        organization: org?.name,
+      },
+
+      kpis: {
+        totalBatches,
+        averageYield: Number(averageYield.toFixed(2)),
+        availableQuantity,
+      },
+
+      statusChart,
+      yieldChart,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 // ✅ GET ALL
 router.get("/", async (req, res,next) => {
@@ -172,6 +273,7 @@ router.get("/search/filter", async (req, res, next) => {
     next(err);
   }
 });
+
 
 
 module.exports = router;

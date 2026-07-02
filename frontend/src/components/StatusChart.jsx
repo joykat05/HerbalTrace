@@ -1,12 +1,7 @@
 import {ResponsiveContainer , PieChart , Pie , Cell, Tooltip} from "recharts";
 import { useState } from "react";
-const data = [
-  { name: "Pending", value: 8 },
-  { name: "Certificate Ready", value: 15 },
-  { name: "Ready to Dispatch", value: 40 },
-  { name: "Completed", value: 60 },
-];
-export default function StatusChart (){
+
+export default function StatusChart({ data }) {
     const COLORS =["#d77dfe","#7db9fe","#d1de3b","#49b63f"];
     const [activeIndex, setActiveIndex] = useState(null);
     

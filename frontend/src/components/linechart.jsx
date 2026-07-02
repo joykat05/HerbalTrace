@@ -1,11 +1,6 @@
 import {ResponsiveContainer , LineChart , Line , Cell, Tooltip, XAxis ,YAxis} from "recharts";
-const data = [
-  { name: "Jasmine", value: 8 },
-  { name: "Lavender", value: 15 },
-  { name: "Rose", value: 40 },
-  { name: "Neem", value: 60 },
-];
-export default function YieldChart(){
+
+export default function YieldChart({ data }) {
     return(
         <>
         <div className="bg-linear-to-b from-green-900/80 to-black/80 rounded-2xl">
