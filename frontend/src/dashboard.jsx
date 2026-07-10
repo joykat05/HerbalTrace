@@ -42,9 +42,13 @@ export default function Dashboard(){
         <div className="flex gap-4">
         <Sidebar />
         <div className="flex-1 ">
-            <div className="rounded-2xl bg-linear-to-r from-green-300/80 via-green-300/80 to-white/80 p-8 m-5">
-            <p className="text-green-700 text-4xl font-prompt">Welcome, {dashboard.user.name}</p>
-            <p className="text-green-700 text-2xl font-prompt">Orgaization: {dashboard.user.organization}</p>
+            <div className="rounded-2xl bg-linear-to-r from-green-300/80 via-green-300/80 to-white/80 dark:from-green-900/80 dark:via-green-900/80 dark:to-gray-700/80 p-8 m-5">
+            <p className="text-green-700 dark:text-green-300 text-4xl font-prompt">Welcome, {dashboard.user.name}</p>
+            <div className="flex justify-between text-green-700 dark:text-green-300 text-2xl font-prompt">
+                 <p >Orgaization: {dashboard.user.organization}</p>
+            <p>{dashboard.user.role}</p>
+            </div>
+           
             </div>
             <div className="flex gap-3">
                   <Card title={
@@ -73,7 +77,7 @@ export default function Dashboard(){
                 </Card>
                   <Card title={
                     <>
-                    Total Available Quantity
+                    Available Qty
                     <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.availableQuantity} ml</p>
                     </>
                 }
@@ -85,7 +89,7 @@ export default function Dashboard(){
                 </Card>
             </div>
             <div>
-               <StatusChart data={dashboard.statusChart} />
+               <StatusChart data={dashboard.statusChart}/>
             </div>
             <div className="grid grid-cols-7 gap-2 m-4">
                 <div className="col-span-2 bg-linear-to-b from-black/70 to-green-900  rounded-2xl text- font-prompt p-4 inset-shadow-sm inset-shadow-green-300">

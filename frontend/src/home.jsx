@@ -19,7 +19,8 @@ export default function Home(){
             playsInline
         />
 
-            <div className="absolute top-[40%]  max-md:top-[50%]   left-1/2 w-250 max-md:w-[85%] text-center -translate-x-1/2 -translate-y-1/2 rounded-xl  text-white  bg-green-400/40 p-4 max-md:p-2 hover:scale-105 transition duration-200 ease-out
+            <div className="absolute top-[40%]  max-md:top-[50%]   left-1/2 w-250 max-md:w-[85%] text-center -translate-x-1/2 
+            -translate-y-1/2 rounded-xl  text-white  bg-green-400/40 p-4 max-md:p-2 hover:scale-105 transition duration-200 ease-out
             dark:bg-green-900/60
             dark:text-green-200
             ">

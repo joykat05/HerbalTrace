@@ -5,7 +5,7 @@ const Organization = require("../models/orgmodel");
 const router = express.Router();
 
 
-// 🔧 Batch Number Generator (clean format)
+
 const generateBatchNumber = async (orgId) => {
   const org = await Organization.findByIdAndUpdate(
     orgId,
@@ -17,7 +17,7 @@ const generateBatchNumber = async (orgId) => {
 };
 
 
-// ✅ CREATE BATCH
+
 router.post("/", async (req, res, next) => {
   try {
     const { name, plant, yield, productionDate } = req.body;
@@ -59,7 +59,7 @@ router.get("/dashboard", async (req, res, next) => {
     const org = await Organization.findById(req.user.orgId).select("name");
     const User = require("../models/usermodal"); // adjust path if needed
 
-    const user = await User.findById(req.user.userId).select("name");
+    const user = await User.findById(req.user.userId).select("name role");
 
     // Fetch all batches for this organization
     const batches = await Batch.find({
@@ -100,24 +100,24 @@ router.get("/dashboard", async (req, res, next) => {
       statusCounts[batch.status]++;
     });
 
-    const statusChart = [
-      {
-        name: "Pending",
-        value: statusCounts.pending,
-      },
-      {
-        name: "Certificate Ready",
-        value: statusCounts.certified,
-      },
-      {
-        name: "Partially Dispatched",
-        value: statusCounts.partially_dispatched,
-      },
-      {
-        name: "Completed",
-        value: statusCounts.dispatched,
-      },
-    ];
+   const statusChart = [
+  {
+    name: "Pending",
+    value: statusCounts.pending,
+  },
+  {
+    name: "Certified",
+    value: statusCounts.certified,
+  },
+  {
+    name: "Partially Dispatched",
+    value: statusCounts.partially_dispatched,
+  },
+  {
+    name: "Completely Dispatched",
+    value: statusCounts.dispatched,
+  },
+];
 
     // ==========================
     // Yield Chart
@@ -136,6 +136,7 @@ router.get("/dashboard", async (req, res, next) => {
       user: {
         name: user?.name,
         organization: org?.name,
+        role : user?.role
       },
 
       kpis: {
@@ -152,7 +153,36 @@ router.get("/dashboard", async (req, res, next) => {
   }
 });
 
+// 🔍 SEARCH / FILTER
+router.get("/search/filter", async (req, res, next) => {
+  try {
+    const { search, startDate, endDate } = req.query;
 
+    let filter = {
+      organization: req.user.orgId,
+    };
+
+    if (search) {
+      filter.$or = [
+        { batchNumber: new RegExp(search, "i") },
+        { plant: new RegExp(search, "i") },
+      ];
+    }
+
+    if (startDate && endDate) {
+      filter.productionDate = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    const batches = await Batch.find(filter).sort({ createdAt: -1 });
+
+    res.json(batches);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // ✅ GET ALL
 router.get("/", async (req, res,next) => {
@@ -241,38 +271,6 @@ router.delete("/:id", async (req, res,next) => {
   }
 });
 
-
-
-// 🔍 SEARCH / FILTER
-router.get("/search/filter", async (req, res, next) => {
-  try {
-    const { search, startDate, endDate } = req.query;
-
-    let filter = {
-      organization: req.user.orgId,
-    };
-
-    if (search) {
-      filter.$or = [
-        { batchNumber: new RegExp(search, "i") },
-        { plant: new RegExp(search, "i") },
-      ];
-    }
-
-    if (startDate && endDate) {
-      filter.productionDate = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-      };
-    }
-
-    const batches = await Batch.find(filter).sort({ createdAt: -1 });
-
-    res.json(batches);
-  } catch (err) {
-    next(err);
-  }
-});
 
 
 

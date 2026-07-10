@@ -4,17 +4,18 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/usermodal");
 const Organization = require("../models/orgmodel");
+const {
+    registerSchema,
+    loginSchema
+} = require("../validators/authvalidator");
 
 const router = express.Router();
 
 // SIGNUP
-router.post("/signup", async (req, res,next) => {
+router.post("/register", async (req, res,next) => {
   try {
-    const { name, email, password, orgName, role } = req.body;
-
-    if (!name || !email || !password || !orgName) {
-      return res.status(400).json({ message: "All fields required" });
-    }
+    const validated = registerSchema.parse(req.body);
+    const {name,email,password,orgName,role}=validated;
 
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
@@ -60,6 +61,16 @@ router.post("/signup", async (req, res,next) => {
     });
 
   } catch (err) {
+    if(err.name==="ZodError"){
+return res.status(400).json({
+message:err.errors
+});
+}
+if (err.code === 11000) {
+    return res.status(400).json({
+        message: "Email already exists"
+    });
+}
     next(err);
   }
 });
@@ -67,12 +78,9 @@ router.post("/signup", async (req, res,next) => {
 // LOGIN
 router.post("/login", async (req, res,next) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
-    }
-
+    const validated = loginSchema.parse(req.body);
+    const {email,password}=validated;
+    
     const user = await User.findOne({ email: email.toLowerCase() }).populate("organization", "name");
 
     if (!user) {
@@ -108,6 +116,16 @@ router.post("/login", async (req, res,next) => {
     });
 
   } catch (err) {
+    if(err.name==="ZodError"){
+return res.status(400).json({
+message:err.errors
+});
+}
+if (err.code === 11000) {
+    return res.status(400).json({
+        message: "Email already exists"
+    });
+}
     next(err);
   }
 });

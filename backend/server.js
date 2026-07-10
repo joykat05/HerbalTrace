@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authroutes");
 const batchRoutes = require("./routes/batchRoutes");
 const authMiddleware = require("./middleware/authmiddleware");
 const errorHandler= require("./middleware/errorhandler");
+const authLimiter = require("./middleware/rateLimiter");
 
 
 const app = express();
@@ -16,7 +17,7 @@ mongoose.connect(process.env.MONGODB_STRING)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-app.use("/", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/batches", authMiddleware, batchRoutes);
 
 app.use(errorHandler);

@@ -76,6 +76,7 @@ export default function Batches() {
         setDeletingBatch(null);
 
         fetchBatches();
+         showToast("Batch deleted successfully!", "success");
     } catch (err) {
         showToast("Something went wrong", "error");
         console.error(err);
@@ -226,6 +227,7 @@ export default function Batches() {
                 onUpdated={() => {
                     fetchBatches();
                     setIsEditOpen(false);
+                    showToast("Batch updated successfully!", "success");
                 }}
             />
             <Modal
