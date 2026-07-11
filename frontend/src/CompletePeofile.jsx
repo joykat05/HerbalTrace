@@ -58,19 +58,22 @@ function CompleteProfile() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-full bg-gray-400 p-10">
-      <h2>Complete Your Profile</h2>
+    <div className="flex justify-center items-center h-screen w-full bg-black/60 p-10">
+      <div className="m-5 wd-md space-y-2 bg-linear-to-r from-green-800/80 to-green-950 text-white font-prompt shadow-[0px_0px_24px_5px_rgba(255,255,255,1)] p-5 rounded-2xl text-2xl">
+      <h2 >Complete Your Profile</h2>
 
-      <p>
+      <p >
         Welcome! Please tell us which organization you belong to before
         continuing.
       </p>
 
-      <form onSubmit={handleSubmit} className="m-5 bg-green-800/80 text-white font-promt">
+      <form onSubmit={handleSubmit}>
         <div>
           <label>Organization Name</label>
-
+          <br />
           <input
+          className=" focus:shadow-[0px_0px_17px_0px_rgba(255,255,255,1)]
+          focus:ring-2 focus:ring-green-200 p-2 mt-2 border-white border-2 rounded-2xl"
             type="text"
             placeholder="e.g. PRG Oils"
             value={orgName}
@@ -82,8 +85,10 @@ function CompleteProfile() {
 
         <div>
           <label>Role</label>
-
+          <br />
           <select
+           className=" focus:shadow-[0px_0px_17px_0px_rgba(255,255,255,1)]
+          focus:ring-2 focus:ring-green-200 border-white border-2 rounded-2xl p-2 mt-2 text-gray-900"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -101,10 +106,13 @@ function CompleteProfile() {
           </p>
         )}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading}
+        className="text-green-800 bg-white border-2 border-green-800 p-2 rounded-2xl font-prompt hover:shadow-[0px_0px_17px_0px_rgba(255,255,255,1)]"
+        >
           {loading ? "Creating Account..." : "Finish Registration"}
         </button>
       </form>
+    </div>
     </div>
   );
 }

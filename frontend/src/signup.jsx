@@ -4,6 +4,7 @@ import { Input, Loader, showToast } from "./components/ui";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -176,6 +177,16 @@ export default function Signup() {
             Sign Up
           </button>
         </form>
+               <button
+                  onClick={() => {
+                    window.location.href =
+                      "http://localhost:5000/api/auth/google";
+                  }}
+                  className="w-full border-2 border-green-300 p-2 font-prompt text-gray-700 rounded-2xl flex gap-4 justify-center items-center"
+                >
+                  Continue with Google
+                  <FaGoogle size={22} className="max-md:text-[16px] text-green-400" />
+                </button>
       </Card>
     </div>
   );

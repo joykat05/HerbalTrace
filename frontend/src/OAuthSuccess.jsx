@@ -4,16 +4,22 @@ import { useNavigate } from "react-router-dom";
 export default function OAuthSuccess() {
   const navigate = useNavigate();
 
-  useEffect(() => {
+useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("token");
 
-    if (token) {
-      localStorage.setItem("token", token);
-      navigate("/dashboard");
-    } else {
+    if (!token) {
       navigate("/login");
+      return;
     }
-  }, []);
+
+    localStorage.setItem("token", token);
+
+    // Let the browser finish writing localStorage
+    setTimeout(() => {
+      navigate("/dashboard", { replace: true });
+    }, 100);
+
+  }, [navigate]);
 
   return(
     <>
@@ -25,7 +31,7 @@ export default function OAuthSuccess() {
     style={{ fontSize : 80 }}>
           local_florist
     </span>
-    <p style={{ fontSize : 40 }}>Loading...</p>
+    <p style={{ fontSize : 40 }}>Signing you in....</p>
 
     </div>
     </>
