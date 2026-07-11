@@ -120,6 +120,15 @@ export default function Login() {
           </button>
         </form>
 
+                <button
+          onClick={() => {
+            window.location.href =
+              "http://localhost:5000/api/auth/google";
+          }}
+        >
+          Continue with Google
+        </button>
+
         <br />
 
         <p className="text-sm text-center mt-3 text-gray-500">

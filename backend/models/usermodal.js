@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
     lowercase: true
   },
 
-  password: { type: String, required: true },
+  password: { type: String,   default: ""},
 
   role: {
     type: String,

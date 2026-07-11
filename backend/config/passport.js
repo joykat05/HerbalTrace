@@ -1,5 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const User = require("../models/usermodal");
+const Organization = require("../models/orgmodel");
 
 passport.use(
   new GoogleStrategy(
@@ -11,11 +13,19 @@ passport.use(
 
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // For now, just print the Google profile
-        console.log(profile);
-
-        // Tell Passport authentication succeeded
-        return done(null, profile);
+      const email = profile.emails[0].value.toLowerCase();
+      const name = profile.displayName;
+      let user = await User.findOne({
+          email
+      }).populate("organization");
+       if (user) {
+          return done(null, user);
+        }
+        return done(null, {
+          isNewUser: true,
+          name,
+          email,
+        });
       } catch (err) {
         return done(err, null);
       }
