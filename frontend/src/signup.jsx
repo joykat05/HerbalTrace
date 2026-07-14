@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -36,12 +37,14 @@ export default function Signup() {
         showToast(result.message || "Signup failed", "error");
         return;
       }
+       localStorage.setItem("token", result.token);
+      localStorage.setItem("user", JSON.stringify(result.user));
 
       showToast("Signup successful!", "success");
 
       await new Promise((r) => setTimeout(r, 1000));
 
-      // navigate("/dashboard");
+       navigate("/dashboard");
     } catch (err) {
         await new Promise((r) => setTimeout(r, 800));
       console.log(err);
@@ -54,11 +57,13 @@ export default function Signup() {
   };
 
   return (
-    <div className="justify-center items-center flex m-10 p-4 rounded-2xl  bg-black/30  dark:bg-gray-900/30">
+    
+    <div className="justify-center items-center flex m-2 p-2 rounded-2xl  bg-[url(/content/flowers3.jpg)] bg-cover brightness-90  dark:brightness-50">
+      <div className=" bg-linear-to-r from-green-600/80 to-green-800/80 w-4xl rounded-2xl flex gap-2" >
       <Card
         title={
           <div className="flex items-center gap-2">
-            Sign Up
+            Create an Account
             <span className="material-symbols-outlined bg-green-300 text-white rounded-full p-2 text-[40px]">
               how_to_reg
             </span>
@@ -177,17 +182,72 @@ export default function Signup() {
             Sign Up
           </button>
         </form>
+         <div className="flex justify-center items-center gap-2 mb-4 text-gray-500">
+          <hr className="w-full"/>OR<hr className="w-full"/>
+        </div>
+       
                <button
-                  onClick={() => {
-                    window.location.href =
-                      "http://localhost:5000/api/auth/google";
-                  }}
-                  className="w-full border-2 border-green-300 p-2 font-prompt text-gray-700 rounded-2xl flex gap-4 justify-center items-center"
-                >
-                  Continue with Google
-                  <FaGoogle size={22} className="max-md:text-[16px] text-green-400" />
-                </button>
+          onClick={() => {
+            window.location.href =
+              "http://localhost:5000/api/auth/google";
+          }}
+          className="w-full border-2 border-green-300 p-2 font-prompt hover:text-gray-700 text-white rounded-2xl flex gap-4 justify-center items-center bg-green-600 hover:bg-white"
+        >
+          Continue with Google
+          <FaGoogle size={22} className="max-md:text-[16px] text-green-400" />
+        </button>
+               
       </Card>
+      
+      <div className="w-2xl pt-10 pr-5">
+       <div className="max-w-md text-white">
+          {/* Logo */}
+          <div className="flex items-center gap-3 mb-8">
+            <span className="material-symbols-outlined text-pink-400" style={{ fontSize: window.innerWidth < 768 ? "24px" : "50px" }}>
+              local_florist
+            </span>
+
+            <h1 className="text-5xl font-bold tracking-wide font-prompt">
+              HerbalTrace
+            </h1>
+          </div>
+          <h2 className="text-3xl font-semibold leading-snug mb-4">
+            Simplify Essential Oil Production Management
+          </h2>
+
+          <div className="space-y-4 text-lg">
+            <div className="flex items-center gap-3">
+              <span className="text-green-400 text-xl">✓</span>
+              <span>Centralized Batch Management</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-green-400 text-xl">✓</span>
+              <span>Complete Production Traceability</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-green-400 text-xl">✓</span>
+              <span>Linked Laboratory Certificates</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-green-400 text-xl">✓</span>
+              <span>Production Analytics & Insights</span>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <br/>
+         <p className="text-sm text-center mt-3 text-white/90">
+          Already have an account?
+          <br/>
+          <Link to="/login"><button className="text-pink-300 cursor-pointer border-2 m-2 rounded-xl border-pink-300 bg-none p-2">Log in</button></Link>
+          
+        </p>
+        </div>
+      
+      </div>
     </div>
   );
 }

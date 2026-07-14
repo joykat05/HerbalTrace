@@ -3,6 +3,12 @@ const Batch = require("../models/batchmodel");
 const Organization = require("../models/orgmodel");
 
 const router = express.Router();
+const multer = require("multer");
+
+const upload = multer({
+  dest: "uploads/"
+});
+
 
 
 
@@ -153,6 +159,33 @@ router.get("/dashboard", async (req, res, next) => {
   }
 });
 
+router.get("/search", async (req, res, next) => {
+  try {
+    const { query } = req.query;
+
+    let filter = {
+      organization: req.user.orgId,
+    };
+
+    if (query) {
+      filter.$or = [
+        { batchNumber: new RegExp(query, "i") },
+        { name: new RegExp(query, "i") },
+      ];
+    }
+
+    const batches = await Batch.find(filter)
+      .select("_id batchNumber name")
+      .sort({ batchNumber: 1 })
+      .limit(10);
+
+    res.json(batches);
+
+  } catch (err) {
+    next(err);
+  }
+});
+
 // 🔍 SEARCH / FILTER
 router.get("/search/filter", async (req, res, next) => {
   try {
@@ -219,7 +252,71 @@ router.get("/:id", async (req, res,next) => {
   }
 });
 
+router.get("/:id/certificate", async (req, res, next) => {
+  try {
 
+    const batch = await Batch.findOne({
+      _id: req.params.id,
+      organization: req.user.orgId,
+    }).select("batchNumber name certificate status");
+
+    if (!batch) {
+      return res.status(404).json({
+        message: "Batch not found",
+      });
+    }
+
+    res.json(batch);
+
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/:id/certificate", upload.single("pdf"), async (req, res, next) => {
+  try{
+    console.log(req.body);
+    console.log(req.file);
+
+    const {
+        labName,
+        issuedDate,
+        expiryDate
+    } = req.body;
+
+    const pdf = req.file?.path;
+    const batch = await Batch.findOne({
+      _id: req.params.id,
+      organization: req.user.orgId,
+    });
+
+    if (!batch) {
+      return res.status(404).json({
+        message: "Batch not found",
+      });
+    }
+
+    batch.certificate = {
+      pdf,
+      labName,
+      issuedDate,
+      expiryDate,
+      uploadedAt: new Date(),
+    };
+
+    batch.status = "certified";
+
+    await batch.save();
+
+    res.json({
+      message: "Certificate uploaded successfully",
+      batch,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+});
 
 // ✅ UPDATE
 router.patch("/:id", async (req, res, next) => {

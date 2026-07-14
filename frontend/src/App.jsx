@@ -12,6 +12,7 @@ import Batchform from './batchform'
 import Batches from './batches'
 import CompleteProfile from "./CompletePeofile";
 import OAuthSuccess from "./OAuthSuccess"
+import Certificate from './AddCertificate'
 
 function App({ dark, setDark }) {
   return (
@@ -22,14 +23,17 @@ function App({ dark, setDark }) {
           <Route path="about" element={<About />} />
           <Route path="features" element={<Features />} />
           <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+          
           <Route path="demo" element={<Demo />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="addbatch" element={<Batchform />} />
           <Route path="batches" element={<Batches />} />
+          <Route path="certificates" element={<Certificate />} />
         </Route>
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
+        <Route path="/signup" element={<Signup />} />
+         
       </Routes>
     </BrowserRouter>
   );

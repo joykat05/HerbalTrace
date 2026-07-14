@@ -4,17 +4,19 @@ import "../app.css";
 function Card({ title, description, children }) {
   return (
     <div className="font-prompt 
-      border-4 border-green-300 
+       
       p-5 max-md:p-2 
       m-4 max-md:m-1 
       rounded-2xl 
       max-w-lg w-full 
       max-md:max-w-full   
-      bg-white/90 
+      bg-linear-to-b from-white via-white/90 to-gray-300/90 
       shadow-md 
       space-y-3 max-md:space-y-1
-      hover:scale-105
-      hover:border-pink-300 
+      hover:scale-102
+      inset-shadow-sm
+      inset-shadow-green-300
+      hover:inset-shadow-pink-300 
       transition duration-300 ease-out
       dark:bg-gray-900
       dark:text-green-300

@@ -5,12 +5,20 @@ import StatusChart from "./components/StatusChart";
 import YieldChart from "./components/linechart";
 import { useEffect, useState } from "react";
 import { Loader } from "./components/ui";
+import { useNavigate } from "react-router";
 export default function Dashboard(){
     const [dashboard, setDashboard] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
     const fetchDashboard = async () => {
         try {
             const token = localStorage.getItem("token");
+            if (!token) {
+            setTimeout(() => {
+                navigate("/login");
+            }, 2000); // show loader for 2 seconds
+            return;
+        }
 
             const response = await fetch("http://localhost:5000/batches/dashboard", {
                 headers: {

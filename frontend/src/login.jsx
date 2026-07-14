@@ -4,6 +4,7 @@ import { Input, Loader, showToast } from "./components/ui";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export default function Login() {
   };
 
   return (
-    <div className="justify-center items-center flex m-10 p-4  rounded-2xl  bg-black/30  dark:bg-gray-900/30">
+    <div className="justify-center items-center flex m-2 p-4  rounded-2xl  bg-black/30  dark:bg-gray-900/30">
       <Card
         title={
           <div className="flex items-center gap-2">
@@ -68,15 +69,15 @@ export default function Login() {
           </div>
         }
       >
+        <p>Welcome Back!</p>
         {/* loader without destroying form */}
         {isSubmitting && (
           <div className="flex justify-center my-4 transition-all duration-150">
             <Loader size={80} />
           </div>
         )}
-
         <form
-          className="p-6 w-full grid gap-4"
+          className="p-3 w-full grid gap-4"
           onSubmit={handleSubmit(onSubmit, onError)}
         >
           <Input
@@ -120,12 +121,16 @@ export default function Login() {
             Login
           </button>
         </form>
+        <div className="flex justify-center items-center gap-2 mb-4 text-gray-500">
+          <hr className="w-full"/>OR<hr className="w-full"/>
+        </div>
+        
                 <button
           onClick={() => {
             window.location.href =
               "http://localhost:5000/api/auth/google";
           }}
-          className="w-full border-2 border-green-300 p-2 font-prompt text-gray-700 rounded-2xl flex gap-4 justify-center items-center"
+          className="w-full border-2 border-green-300 p-2 font-prompt hover:text-gray-700 text-white rounded-2xl flex gap-4 justify-center items-center bg-green-600 hover:bg-white"
         >
           Continue with Google
           <FaGoogle size={22} className="max-md:text-[16px] text-green-400" />
@@ -135,7 +140,8 @@ export default function Login() {
 
         <p className="text-sm text-center mt-3 text-gray-500">
           Don’t have an account?{" "}
-          <span className="text-green-600 cursor-pointer">Sign up</span>
+          <Link to="/signup"><span className="text-green-600 cursor-pointer">Sign up</span></Link>
+          
         </p>
       </Card>
     </div>
