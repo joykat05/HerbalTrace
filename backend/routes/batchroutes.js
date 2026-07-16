@@ -161,11 +161,16 @@ router.get("/dashboard", async (req, res, next) => {
 
 router.get("/search", async (req, res, next) => {
   try {
-    const { query } = req.query;
+    const { query, status } = req.query;
 
-    let filter = {
+    const filter = {
       organization: req.user.orgId,
     };
+
+    if (status) {
+      const statuses = status.split(",");
+      filter.status = { $in: statuses };
+    }
 
     if (query) {
       filter.$or = [
@@ -175,12 +180,11 @@ router.get("/search", async (req, res, next) => {
     }
 
     const batches = await Batch.find(filter)
-      .select("_id batchNumber name")
+      .select("_id batchNumber name availableQuantity")
       .sort({ batchNumber: 1 })
       .limit(10);
 
     res.json(batches);
-
   } catch (err) {
     next(err);
   }
@@ -310,6 +314,79 @@ router.post("/:id/certificate", upload.single("pdf"), async (req, res, next) => 
 
     res.json({
       message: "Certificate uploaded successfully",
+      batch,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+});
+
+const Dispatch = require("../models/dispatchmodel");
+
+// POST /batches/:id/dispatch
+router.post("/:id/dispatch", async (req, res, next) => {
+  try {
+    const { buyerName, quantity } = req.body;
+
+    if (!buyerName || !quantity?.value || !quantity?.unit) {
+      return res.status(400).json({
+        message: "Buyer name and quantity are required.",
+      });
+    }
+
+    const batch = await Batch.findOne({
+      _id: req.params.id,
+      organization: req.user.orgId,
+    });
+
+    if (!batch) {
+      return res.status(404).json({
+        message: "Batch not found.",
+      });
+    }
+
+    // Optional: Only certified batches can be dispatched
+    if (batch.status === "pending") {
+      return res.status(400).json({
+        message: "Batch must be certified before dispatch.",
+      });
+    }
+
+    // Check available quantity
+    if (quantity.value > batch.availableQuantity) {
+      return res.status(400).json({
+        message: `Only ${batch.availableQuantity} ml available.`,
+      });
+    }
+
+    // Create dispatch
+    const dispatch = await Dispatch.create({
+      batch: batch._id,
+      buyerName,
+      quantity,
+      organization: req.user.orgId,
+      createdBy: req.user.userId,
+    });
+
+    // Update available quantity
+    batch.availableQuantity -= quantity.value;
+
+    // Save dispatch reference
+    batch.dispatches.push(dispatch._id);
+
+    // Update status
+    if (batch.availableQuantity === 0) {
+      batch.status = "dispatched";
+    } else {
+      batch.status = "partially_dispatched";
+    }
+
+    await batch.save();
+
+    res.status(201).json({
+      message: "Dispatch created successfully.",
+      dispatch,
       batch,
     });
 

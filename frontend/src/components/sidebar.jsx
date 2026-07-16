@@ -38,7 +38,7 @@ export default function Sidebar(){
                      Add Certificate
                 </Link></p>
         <p className="font-prompt text-2xl p-2 mt-2">
-            <Link to="/" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200">
+            <Link to="/dispatch" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200">
                 <span className="material-symbols-outlined "
                     style = {{fontSize : "30px"}}>
                         delivery_truck_speed

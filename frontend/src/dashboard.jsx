@@ -67,7 +67,7 @@ export default function Dashboard(){
                 }
                 description={
                     <>
-                    <Link to="/" className="hover:text-green-600 text-gray-600">Veiw all Batches</Link>
+                    <Link to="/batches" className="hover:text-green-600 text-gray-600">Veiw all Batches</Link>
                     </>
                 }>
                 </Card>

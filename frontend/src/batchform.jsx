@@ -63,7 +63,7 @@ const onSubmit = async (data) => {
       <Sidebar />
     
       <div className="flex items-center justify-center min-h-screen m-5 flex-1">
-        <div className="relative rounded-2xl overflow-hidden max-w-4xl shadow-[0px_0px_24px_8px_rgba(253,139,223,1)]">
+        <div className="relative rounded-2xl overflow-hidden max-w-3xl shadow-[0px_0px_24px_1px_rgba(253,139,223,1)]">
           <div className="absolute inset-0 bg-[url('/content/other-pink.jpg')] bg-cover bg-center" />
           <div className="absolute inset-0 bg-black/40 dark:bg-black/60" />
 
@@ -86,7 +86,7 @@ const onSubmit = async (data) => {
                 </label>
                 <Input
                   placeholder="Batch Name"
-                  className="focus:shadow-[0px_0px_24px_8px_rgba(253,139,223,1)] mt-2"
+                  className="focus:shadow-[0px_0px_24px_5px_rgba(253,139,223,1)] mt-2"
                   {...register("name", {
                     required: "Batch name is required",
                   })}
@@ -101,7 +101,7 @@ const onSubmit = async (data) => {
                 </label>
                 <Input
                   placeholder="Plant"
-                  className="focus:shadow-[0px_0px_24px_8px_rgba(253,139,223,1)] mt-2"
+                  className="focus:shadow-[0px_0px_24px_5px_rgba(253,139,223,1)] mt-2"
                   {...register("plant", {
                     required: "Plant is required",
                   })}
@@ -120,7 +120,7 @@ const onSubmit = async (data) => {
                 <Input
                   type="number"
                   placeholder="Yield in ml"
-                  className="focus:shadow-[0px_0px_24px_8px_rgba(253,139,223,1)] mt-2"
+                  className="focus:shadow-[0px_0px_24px_5px_rgba(253,139,223,1)] mt-2"
                   {...register("yield", {
                     required: "Yield is required",
                     valueAsNumber: true,
@@ -138,7 +138,7 @@ const onSubmit = async (data) => {
                 </label>
                 <Input
                   type="date"
-                  className="focus:shadow-[0px_0px_24px_8px_rgba(253,139,223,1)] mt-2"
+                  className="focus:shadow-[0px_0px_24px_5px_rgba(253,139,223,1)] mt-2"
                   {...register("date")}
                 />
 

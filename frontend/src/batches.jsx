@@ -99,8 +99,8 @@ export default function Batches() {
         <>
         <div className="flex gap-4">
             <Sidebar />
-            <div className="flex-1 px-10 transition-all duration-300">
-                <div className="w-full flex flex-col justify-center items-center m-5">
+           <div className="flex-1 min-w-0 px-10 transition-[width] duration-200">
+                <div className="w-full max-w-6xl mx-auto flex flex-col items-center py-5">
                     <div className="grid grid-cols-5 gap-2 mt-5  w-full max-w-4xl">
                         <button
                                 className="text-2xl text-white bg-green-700/70 w-full col-span-1 font-prompt rounded-2xl
@@ -119,7 +119,7 @@ export default function Batches() {
 
                         {/* TABLE */}
 
-                        <div className="mt-8  w-full max-w-5xl overflow-x-auto rounded-2xl border border-green-700/40 ">
+                        <div className="mt-8  w-full max-w-5xl overflow-x-auto  rounded-2xl border border-green-700/40 ">
                             <table className="w-full text-white">
                                 <thead className="bg-green-700/70 font-prompt">
                                     <tr>
@@ -161,9 +161,13 @@ export default function Batches() {
                                                     {batch.availableQuantity}
                                                 </td>
 
-                                                <td className="px-4 py-3 capitalize">
-                                                    {batch.status}
-                                                </td>
+                                                <td className="px-4 py-3 capitalize whitespace-normal break-words">
+                                                    {batch.status === "partially_dispatched"
+                                                        ? "Partially Dispatched"
+                                                        : batch.status === "dispatched"
+                                                        ? "Dispatched"
+                                                        : batch.status.charAt(0).toUpperCase() + batch.status.slice(1)}
+                                                    </td>
 
                                                 <td className="px-4 py-3">
                                                     {new Date(batch.productionDate).toLocaleDateString()}

@@ -11,6 +11,7 @@ export default function CertificateForm() {
     register,
     handleSubmit,
     setValue,
+    getValues,
      reset,
     formState: { errors },
   } = useForm();
@@ -18,7 +19,7 @@ export default function CertificateForm() {
   const [loading, setLoading] = useState(false);
 
 const [batchOptions, setBatchOptions] = useState([]);
-const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
+const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
 
  useEffect(() => {
   if (!batchId) return;
@@ -60,7 +61,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
 
   try {
     const response = await fetch(
-      `http://localhost:5000/batches/search?query=${encodeURIComponent(value)}`,
+      `http://localhost:5000/batches/search?query=${encodeURIComponent(value)}&status=pending`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -174,7 +175,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
                 {batchId ? (
                   <Input
                     readOnly
-                    className="mt-2"
+                    className="mt-2 "
                     {...register("batchId", {
                       required: "Batch ID is required",
                     })}
@@ -199,9 +200,11 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
                             `${batch.batchNumber} (${batch.name})` === value
                         );
 
-                        if (selected) {
-                        setSelectedBatchId(selected._id);
-                        }
+                            if (selected) {
+                                setSelectedBatchId(selected._id);
+                            } else {
+                                setSelectedBatchId("");
+                            }
                     }}
                     />
 
@@ -252,8 +255,15 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
                   type="file"
                   accept=".pdf"
                   className="mt-2"
-                  {...register("pdf")}
+                   {...register("pdf", {
+                    required: "Certificate PDF is required",
+                  })}
                 />
+                {errors.pdf && (
+                <p className="text-red-400 text-sm">
+                  {errors.pdf.message}
+                </p>
+              )}
 
                 {/* Issued Date */}
 
@@ -281,7 +291,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
 
                 {/* Uploaded At */}
 
-                <label className="text-2xl text-white font-prompt">
+                {/* <label className="text-2xl text-white font-prompt">
                   Uploaded At
                 </label>
 
@@ -289,7 +299,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || "");
                   type="date"
                   className="mt-2"
                   {...register("uploadedAt")}
-                />
+                /> */}
 
                 <button
                   type="submit"
