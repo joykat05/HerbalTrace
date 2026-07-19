@@ -100,7 +100,9 @@ export default function Dashboard(){
                <StatusChart data={dashboard.statusChart}/>
             </div>
             <div className="grid grid-cols-7 gap-2 m-4">
-                <div className="col-span-2 bg-linear-to-b from-black/70 to-green-900  rounded-2xl text- font-prompt p-4 inset-shadow-sm inset-shadow-green-300">
+                <div 
+                onClick={() => navigate("/ai-insights")}
+                className="col-span-2 bg-linear-to-b from-black/70 to-green-900  rounded-2xl text- font-prompt p-4 inset-shadow-sm inset-shadow-green-300">
                     <div className=" text-white flex gap-2 items-center justify-center">
                         <span className="material-symbols-outlined  animate-pulse" style={{fontSize : "40px"}}>
                         wand_stars
@@ -118,11 +120,12 @@ export default function Dashboard(){
                             leading-relaxed ">
                         ✨ One plant shows a declining yield trend.
                     </p>
-                    <div className="text-lg hover:text-green-300 text-white mt-5 flex justify-center items-center gap-2">
-                        <p>More detailed analysis</p>
-                         <span className="material-symbols-outlined" style={{fontSize : "40px"}}>
-                        arrow_circle_right
-                    </span>
+                   <div className="text-lg text-white mt-8 flex justify-center items-center gap-2 hover:text-green-300">
+                        <p>Generate Full AI Report</p>
+
+                        <span className="material-symbols-outlined">
+                            arrow_circle_right
+                        </span>
                     </div>
                     
                 </div>

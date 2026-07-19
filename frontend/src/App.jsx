@@ -14,6 +14,7 @@ import CompleteProfile from "./CompletePeofile";
 import OAuthSuccess from "./OAuthSuccess"
 import Certificate from './AddCertificate'
 import DispatchForm from './AddDispatch'
+import AIInsights from './Aifeature'
 
 function App({ dark, setDark }) {
   return (
@@ -24,13 +25,13 @@ function App({ dark, setDark }) {
           <Route path="about" element={<About />} />
           <Route path="features" element={<Features />} />
           <Route path="login" element={<Login />} />
-          
           <Route path="demo" element={<Demo />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="addbatch" element={<Batchform />} />
           <Route path="batches" element={<Batches />} />
           <Route path="certificates" element={<Certificate />} />
           <Route path="dispatch" element={<DispatchForm />} />
+          <Route path="ai-insights" element={<AIInsights />} />
         </Route>
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
