@@ -8,6 +8,9 @@ export default function AIInsights() {
     const [loading, setLoading] = useState(true);
     const [insights, setInsights] = useState("");
     const [error, setError] = useState("");
+    const [question, setQuestion] = useState("");
+    const [chat, setChat] = useState([]);
+    const [chatLoading, setChatLoading] = useState(false);
 
     useEffect(() => {
 
@@ -36,6 +39,12 @@ export default function AIInsights() {
                 }
 
                 setInsights(data.insights);
+                            setChat([
+                {
+                    role: "assistant",
+                    content: data.insights
+                }
+            ]);
 
             } catch (err) {
 
@@ -50,8 +59,68 @@ export default function AIInsights() {
         };
 
         generateInsights();
+        
 
     }, []);
+const askQuestion = async () => {
+
+    if (!question.trim()) return;
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        const updatedChat = [
+            ...chat,
+            {
+                role: "user",
+                content: question
+            }
+        ];
+
+        setChat(updatedChat);
+        setChatLoading(true);
+
+        const response = await fetch(
+            "http://localhost:5000/api/ai/chat",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    question
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message);
+        }
+
+        setChat([
+            ...updatedChat,
+            {
+                role: "assistant",
+                content: data.reply
+            }
+        ]);
+
+        setQuestion("");
+
+    } catch (err) {
+
+        setError(err.message);
+
+    } finally {
+
+        setChatLoading(false);
+
+    }
+};
 
     return (
 
@@ -80,11 +149,53 @@ export default function AIInsights() {
                         
                         <div className="bg-linear-to-r to-green-500/60 from-black/60 text-white font-prompt rounded-xl shadow-lg p-8 ">
 
-                            <ReactMarkdown>
-                                {insights}
-                            </ReactMarkdown>
-                            {/* <div claassname ="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
-                                giheh</div>    */}
+                                                    {chat.map((msg, index) => (
+
+                                <div
+                                    key={index}
+                                    className={
+                                        msg.role === "assistant"
+                                            ? "mb-6"
+                                            : "bg-green-900 rounded-lg p-4 my-4"
+                                    }
+                                >
+
+                                    {msg.role === "assistant"
+                                        ? <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                        : <p>{msg.content}</p>
+                                    }
+
+                                </div>
+
+                            ))}
+                            {chatLoading && (
+    <div className="flex justify-center my-6">
+        <Loader size={50} />
+    </div>
+)}
+                            <div className="mt-8 flex gap-3">
+
+                           <input
+    value={question}
+    onChange={(e) => setQuestion(e.target.value)}
+    onKeyDown={(e) => {
+        if (e.key === "Enter") {
+            askQuestion();
+        }
+    }}
+    placeholder="Ask about production..."
+    className="flex-1 rounded-lg p-3 text-white bg-black border border-green-500"
+/>
+
+<button
+    onClick={askQuestion}
+    disabled={chatLoading}
+    className="bg-green-600 px-5 rounded-lg disabled:opacity-50"
+>
+    Send
+</button>
+
+                        </div>
                         </div>
 
                     )}

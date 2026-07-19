@@ -151,7 +151,103 @@ ${JSON.stringify(aiData, null, 2)}
 
     }
 };
+const chatWithAI = async (req, res) => {
+    try {
 
+        const { question } = req.body;
+
+        const batches = await Batch.find(
+            { organization: req.user.orgId },
+            {
+                _id: 0,
+                batchNumber: 1,
+                plant: 1,
+                productionDate: 1,
+                "yield.quantity": 1,
+                availableQuantity: 1,
+                status: 1
+            }
+        )
+        .sort({ productionDate: -1 })
+        .lean();
+
+        if (batches.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No batches found."
+            });
+        }
+
+        const aiData = batches.map(batch => ({
+            batch: batch.batchNumber,
+            plant: batch.plant,
+            productionDate: batch.productionDate,
+            yield: batch.yield?.quantity ?? 0,
+            available: batch.availableQuantity,
+            status: batch.status
+        }));
+
+        const prompt = `
+You are an AI production analyst for HerbalTrace.
+
+Your responses should be analytical and concise.
+
+Guidelines:
+- Base every statement only on the supplied production data.
+- Compare records and summarize patterns instead of listing raw field values.
+- Highlight meaningful differences when comparing batches or plants.
+- Never infer causes (e.g., equipment issues, weather, operator error) unless explicitly supported by the data.
+- If the data is insufficient to explain an observation, state that additional production history or operational data is required.
+- Do not speculate or invent statistics.
+- Write in a professional reporting style suitable for a production management dashboard.
+
+Production Data:
+${JSON.stringify(aiData, null, 2)}
+
+When answering user questions:
+
+- Answer the question directly.
+- Analyze the supplied data instead of repeating it.
+- Compare records where relevant.
+- Do not speculate or infer causes.
+- If the data is insufficient, explicitly say so.
+- Keep responses concise and professional.
+User Question:
+${question}
+`;
+
+        const completion = await client.chat.completions.create({
+            model: "google/gemma-3-27b-it",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are an AI production analyst."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            temperature: 0.4
+        });
+
+        res.status(200).json({
+            success: true,
+            reply: completion.choices[0].message.content
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+};
 module.exports = {
-    generateInsights
+    generateInsights,
+    chatWithAI
 };
