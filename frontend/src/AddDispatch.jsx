@@ -1,12 +1,23 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Sidebar from "./components/sidebar";
 import { Input, Loader, showToast } from "./components/ui";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const formatISO = (date) =>
+  date
+    ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(date.getDate()).padStart(2, "0")}`
+    : "";
 
 export default function DispatchForm() {
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors },
   } = useForm();
@@ -56,7 +67,7 @@ export default function DispatchForm() {
         value: Number(data.quantity),
         unit: "ml",
       },
-      dispatchedAt: data.dispatchedAt,
+      dispatchedAt: formatISO(data.dispatchedAt),
     };
 
     const response = await fetch(
@@ -91,36 +102,36 @@ export default function DispatchForm() {
 };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 max-md:gap-0.5">
       <Sidebar />
 
-      <div className="flex flex-1 justify-center items-center min-h-screen m-5">
+      <div className="flex flex-1 justify-center items-center min-h-screen m-5 max-md:m-2 overflow-x-hidden">
         <div className="relative w-full max-w-3xl rounded-2xl overflow-hidden shadow-[0px_0px_24px_1px_rgba(244,246,245,0.8)]">
           <div className="absolute inset-0 bg-[url('/content/white-flowers.jpg')] bg-cover bg-center" />
           <div className="absolute inset-0 bg-black/30 dark:bg-black/50" />
 
           <div className="relative z-10">
-            <h1 className="text-3xl text-white font-prompt p-10 pb-5">
+            <h1 className="text-3xl max-md:text-2xl text-white font-prompt p-10 pb-5 max-md:p-5 max-md:pb-3">
               Add Dispatch
             </h1>
 
-            <hr className="text-white shadow-[0px_0px_24px_2px_rgba(255,255,255,1)] mx-5" />
+            <hr className="text-white shadow-[0px_0px_24px_2px_rgba(255,255,255,1)] mx-5 max-md:mx-3" />
 
-            <div className="flex justify-center my-8">
+            <div className="flex justify-center my-8 max-md:my-5 px-4">
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="w-md space-y-5"
+                className="w-full max-w-md space-y-5 max-md:space-y-4"
               >
                 {/* Batch */}
 
-                <label className="text-2xl text-white font-prompt">
+                <label className="text-2xl max-md:text-lg text-white font-prompt">
                   Batch ID
                 </label>
 
                 <Input
                   list="batchList"
                   placeholder="Search Batch Number..."
-                  className="mt-2"
+                  className="mt-2 w-full"
                   autoComplete="off"
                   {...register("batchId", {
                     required: "Batch ID is required",
@@ -154,20 +165,20 @@ export default function DispatchForm() {
                   </p>
                 )}
                 {selectedBatch && (
-                    <p className="text-green-300 font-prompt">
+                    <p className="text-green-300 font-prompt max-md:text-sm">
                         Available Quantity: <strong>{selectedBatch.availableQuantity} ml</strong>
                     </p>
                     )}
 
                 {/* Buyer Name */}
 
-                <label className="text-2xl text-white font-prompt">
+                <label className="text-2xl max-md:text-lg text-white font-prompt">
                   Buyer Name
                 </label>
 
                 <Input
                   placeholder="Buyer Name"
-                  className="mt-2"
+                  className="mt-2 w-full"
                   {...register("buyerName", {
                     required: "Buyer name is required",
                   })}
@@ -181,7 +192,7 @@ export default function DispatchForm() {
 
                 {/* Quantity */}
 
-                <label className="text-2xl text-white font-prompt">
+                <label className="text-2xl max-md:text-lg text-white font-prompt">
                   Quantity (ml)
                 </label>
 
@@ -190,7 +201,7 @@ export default function DispatchForm() {
                   onWheel={(e) => e.target.blur()}
                    max={selectedBatch?.availableQuantity}
                   placeholder="Enter quantity"
-                  className="mt-2"
+                  className="mt-2 w-full"
                   {...register("quantity", {
                     required: "Quantity is required",
                     min: {
@@ -212,20 +223,35 @@ export default function DispatchForm() {
 
                 {/* Dispatch Date */}
 
-                <label className="text-2xl text-white font-prompt">
+                <label className="text-2xl max-md:text-lg text-white font-prompt">
                   Dispatch Date
                 </label>
 
-                <Input
-                  type="date"
-                  className="mt-2"
-                  {...register("dispatchedAt")}
+                <Controller
+                  control={control}
+                  name="dispatchedAt"
+                  render={({ field }) => (
+                    <DatePicker
+                      selected={field.value}
+                      onChange={(date) => field.onChange(date)}
+                      placeholderText="dd-mm-yyyy"
+                      dateFormat="dd-MM-yyyy"
+                      withPortal
+                      isClearable
+                      showYearDropdown
+                      scrollableYearDropdown
+                      yearDropdownItemNumber={30}
+                      showMonthDropdown
+                      customInput={<Input className="mt-2 w-full" />}
+                      wrapperClassName="w-full"
+                    />
+                  )}
                 />
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-green-600/80 text-white rounded-2xl text-xl font-prompt py-2 mt-6 hover:bg-green-800 hover:scale-105 transition-all disabled:opacity-50"
+                  className="w-full bg-green-600/80 text-white rounded-2xl text-xl max-md:text-lg font-prompt py-2 mt-6 max-md:mt-4 hover:bg-green-800 hover:scale-105 transition-all disabled:opacity-50"
                 >
                   {loading ? <Loader /> : "Add Dispatch"}
                 </button>
