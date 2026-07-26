@@ -7,7 +7,6 @@ export default function Footer(){
         <div className="
             bg-green-300/90 text-green-800 
             p-2 max-md:p-1  
-            ml-4 mr-4 mt-2 mb-2 
             rounded-4xl 
             text-center 
             font-prompt

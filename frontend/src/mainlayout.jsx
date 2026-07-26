@@ -10,15 +10,19 @@ function MainLayout({ dark, setDark }) {
         brightness-80
         dark:brightness-40"
         style={{ backgroundImage: "url('/content/home-bg-img.jpg')" }}
-        
       />
-      <Navbar dark={dark} setDark={setDark} />
-      
-      <main className="flex-grow">
+
+      <div className="px-4 max-md:px-2 mt-2">
+        <Navbar dark={dark} setDark={setDark} />
+      </div>
+
+      <main className="flex-grow px-4 max-md:px-2">
         <Outlet />
       </main>
 
-      <Footer />
+      <div className="px-4 max-md:px-2">
+        <Footer />
+      </div>
     </div>
   );
 }
