@@ -50,7 +50,7 @@ export default function Dashboard(){
         <div className="flex gap-4 max-md:gap-0.5">
         <Sidebar />
         <div className="flex-1 overflow-x-hidden">
-            <div className="rounded-2xl bg-linear-to-r backdrop-blur-xs from-green-200/200 via-white to-green-50/200 dark:from-green-900/150 dark:via-green-900/80 dark:to-gray-700/200 p-8 ml-2 mr-3 mt-5 mb-5 max-lg:ml-1 max-md:ml-1 max-md:p-3">
+            <div className="rounded-2xl bg-linear-to-r backdrop-blur-xs from-green-200/200 via-white to-green-50/200 dark:from-green-900/150 dark:via-green-900 dark:to-gray-700/200 p-8 ml-2 mr-3 mt-5 mb-5 max-lg:ml-1 max-md:ml-1 max-md:p-3">
             <p className="text-green-900 dark:text-green-300 text-4xl max-md:text-2xl font-prompt">Welcome, {dashboard.user.name}</p>
             <div className="flex justify-between max-md:flex-col max-md:gap-2 text-green-800 dark:text-green-300 text-2xl max-md:text-sm font-prompt">
                  <p >Orgaization: {dashboard.user.organization}</p>

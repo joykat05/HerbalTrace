@@ -8,7 +8,7 @@ function MainLayout({ dark, setDark }) {
     <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10
         brightness-80
-        dark:brightness-40"
+        dark:brightness-40 blur-2xs"
         style={{ backgroundImage: "url('/content/home-bg-img.jpg')" }}
       />
 

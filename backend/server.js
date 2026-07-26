@@ -8,7 +8,7 @@ const authMiddleware = require("./middleware/authmiddleware");
 const errorHandler= require("./middleware/errorhandler");
 const authLimiter = require("./middleware/rateLimiter");
 const aiRoutes = require("./routes/airoutes.js");
-
+const userroutes = require("./routes/userroutes.js");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGODB_STRING)
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/batches", authMiddleware, batchRoutes);
 app.use("/api/ai", authMiddleware, aiRoutes);
+app.use("/user", authMiddleware , userroutes);
 
 app.use(errorHandler);
 
