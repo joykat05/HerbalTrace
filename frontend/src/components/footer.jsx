@@ -25,7 +25,7 @@ export default function Footer(){
                     target="_blank" 
                     className="hover:text-green-600 transition flex items-center justify-center gap-2 max-md:gap-1"
                 >
-                    <FaGithub size={22} className="max-md:text-[16px]" />
+                    <FaGithub className="text-[22px]! max-md:text-[16px]!" />
                     GitHub
                 </a>
                 <a 
@@ -33,7 +33,7 @@ export default function Footer(){
                     target="_blank" 
                     className="hover:text-green-600 transition flex items-center justify-center gap-2 max-md:gap-1"
                 >
-                    <FaLinkedin size={22} className="max-md:text-[16px]" />
+                    <FaLinkedin className="text-[22px]! max-md:text-[16px]!" />
                     Linkedin
                 </a>
                 <a 
@@ -41,7 +41,7 @@ export default function Footer(){
                     target="_blank" 
                     className="hover:text-green-600 transition flex items-center justify-center gap-2 max-md:gap-1"
                 >
-                    <FaInstagram size={22} className="max-md:text-[16px]" />
+                    <FaInstagram className="text-[22px]! max-md:text-[16px]!" />
                     Instagram
                 </a>
             </div>

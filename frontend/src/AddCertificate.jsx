@@ -220,7 +220,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
                 )}
 
                 {errors.batchId && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.batchId.message}
                   </p>
                 )}
@@ -240,7 +240,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
                 />
 
                 {errors.labName && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.labName.message}
                   </p>
                 )}
@@ -260,7 +260,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
                   })}
                 />
                 {errors.pdf && (
-                <p className="text-red-400 text-sm">
+               <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                   {errors.pdf.message}
                 </p>
               )}
@@ -274,8 +274,15 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
                 <Input
                   type="date"
                   className="mt-2"
-                  {...register("issuedDate")}
+                  {...register("issuedDate", {
+                    required: "Issue Date is required",
+                  })}
                 />
+                {errors.issuedDate && (
+               <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
+                  {errors.issuedDate.message}
+                </p>
+              )}
 
                 {/* Expiry Date */}
 
@@ -288,18 +295,6 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
                   className="mt-2"
                   {...register("expiryDate")}
                 />
-
-                {/* Uploaded At */}
-
-                {/* <label className="text-2xl text-white font-prompt">
-                  Uploaded At
-                </label>
-
-                <Input
-                  type="date"
-                  className="mt-2"
-                  {...register("uploadedAt")}
-                /> */}
 
                 <button
                   type="submit"

@@ -47,27 +47,22 @@ export default function Dashboard(){
         }else{
     return(
         <>
-        <div className="flex gap-4">
+        <div className="flex gap-4 max-md:gap-0.5">
         <Sidebar />
-        <div className="flex-1 ">
-            <div className="rounded-2xl bg-linear-to-r from-green-300/80 via-green-300/80 to-white/80 dark:from-green-900/80 dark:via-green-900/80 dark:to-gray-700/80 p-8 m-5">
-            <p className="text-green-700 dark:text-green-300 text-4xl font-prompt">Welcome, {dashboard.user.name}</p>
-            <div className="flex justify-between text-green-700 dark:text-green-300 text-2xl font-prompt">
+        <div className="flex-1 overflow-x-hidden">
+            <div className="rounded-2xl bg-linear-to-r backdrop-blur-xs from-green-200/200 via-white to-green-50/200 dark:from-green-900/150 dark:via-green-900/80 dark:to-gray-700/200 p-8 ml-2 mr-3 mt-5 mb-5 max-lg:ml-1 max-md:ml-1 max-md:p-3">
+            <p className="text-green-900 dark:text-green-300 text-4xl max-md:text-2xl font-prompt">Welcome, {dashboard.user.name}</p>
+            <div className="flex justify-between max-md:flex-col max-md:gap-2 text-green-800 dark:text-green-300 text-2xl max-md:text-sm font-prompt">
                  <p >Orgaization: {dashboard.user.organization}</p>
-            <p>{dashboard.user.role}</p>
+            <p >{dashboard.user.role}</p>
             </div>
            
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mr-0 max-md:mr-2">
                   <Card title={
                     <>
-                    Total Batches
+                    <p className="max-md:text-sm">Total Batches</p>
                     <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.totalBatches}</p>
-                    </>
-                }
-                description={
-                    <>
-                    <Link to="/batches" className="hover:text-green-600 text-gray-600">Veiw all Batches</Link>
                     </>
                 }>
                 </Card>
@@ -77,11 +72,7 @@ export default function Dashboard(){
                     <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.averageYield} ml</p>
                     </>
                 }
-                description={
-                    <>
-                    <Link to="/" className="hover:text-green-600 text-gray-600">Veiw all Batches</Link>
-                    </>
-                }>
+               >
                 </Card>
                   <Card title={
                     <>
@@ -89,17 +80,13 @@ export default function Dashboard(){
                     <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.availableQuantity} ml</p>
                     </>
                 }
-                description={
-                    <>
-                    <Link to="/" className="hover:text-green-600 text-gray-600">Veiw all Batches</Link>
-                    </>
-                }>
+                >
                 </Card>
             </div>
-            <div>
+            <div className="w-full overflow-hidden mt-4">
                <StatusChart data={dashboard.statusChart}/>
             </div>
-            <div className="grid grid-cols-7 gap-2 m-4">
+            <div className="grid grid-cols-7 gap-4 m-4 max-md:grid-cols-1 md:grid-cols-2 xl:grid-cols-7">
  <div
     onClick={() => navigate("/ai-insights")}
     className="col-span-2 cursor-pointer rounded-2xl
@@ -111,7 +98,8 @@ export default function Dashboard(){
                hover:-translate-y-1
                hover:border-emerald-400/40
                hover:shadow-emerald-500/20
-               relative overflow-hidden"
+               relative overflow-hidden
+               max-md:col-span-1 md:col-span-1 xl:col-span-2 max-md:p-4 max-md:text-xl max-md:mt-4"
   >
     {/* Soft Glow */}
     <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-emerald-400/10 blur-3xl" />
@@ -155,7 +143,7 @@ export default function Dashboard(){
       </span>
     </div>
   </div>
-                <div className="col-span-5 ml-2">
+                <div className="col-span-5 max-md:col-span-1 md:col-span-5 lg:col-span-5 max-md:ml-0">
                    
                     <YieldChart data={dashboard.yieldChart} />
                 </div>

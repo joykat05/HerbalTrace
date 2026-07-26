@@ -18,7 +18,9 @@ function Card({ title, description, children }) {
       inset-shadow-green-300
       hover:inset-shadow-pink-300 
       transition duration-300 ease-out
-      dark:bg-gray-900
+      dark:from-gray-700/90
+      dark:via-gray-700/90
+      dark:to-gray-950/90
       dark:text-green-300
       ">
 

@@ -12,8 +12,7 @@ function Navbar({ dark, setDark }) {
       {/* LEFT */}
       <div className="flex items-center shrink-0">
         <span
-          className="material-symbols-outlined m-3 max-md:m-1 text-pink-400 text-[40px] max-md:text-[28px]"
-          style={{ fontSize: window.innerWidth < 768 ? "24px" : "40px" }}
+          className="material-symbols-outlined m-3 max-md:m-1 text-pink-400 text-[40px]! max-md:text-[20px]!"
         >
           local_florist
         </span>
@@ -47,21 +46,20 @@ function Navbar({ dark, setDark }) {
       </div>
 
       {/* RIGHT */}
-      <div className="flex items-center gap-4 max-md:gap-1 shrink-0">
+      <div className="flex justify-baseline items-center gap-4 max-md:gap-1 shrink-0">
         <span
           onClick={() => setDark(prev => !prev)}
-          className="material-symbols-outlined flex-shrink-0 cursor-pointer hover:text-green-600 dark:hover:text-white text-[30px] max-md:text-[20px]"
-          style={{ fontSize: window.innerWidth < 768 ? "24px" : "40px" }}
+          className="material-symbols-outlined shrink-0 cursor-pointer hover:text-green-600 dark:hover:text-white text-[40px]! max-md:text-[20px]!"
         >
           {dark ? "light_mode" : "dark_mode"}
         </span>
-
+        <Link to="/profile">
         <span
-          className="material-symbols-outlined flex-shrink-0 hover:text-green-600 dark:hover:text-white text-[40px] max-md:text-[24px]"
-          style={{ fontSize: window.innerWidth < 768 ? "24px" : "40px" }}
+          className="material-symbols-outlined shrink-0 hover:text-green-600 dark:hover:text-white text-[40px]! max-md:text-[20px]!"
         >
           account_circle
         </span>
+        </Link>
       </div>
     </div>
   )

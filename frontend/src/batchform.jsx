@@ -92,7 +92,7 @@ const onSubmit = async (data) => {
                   })}
                 />
                 {errors.name && (
-                  <p className="text-red-400 text-sm">{errors.name.message}</p>
+                 <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">{errors.name.message}</p>
                 )}
 
                 {/* Plant */}
@@ -107,7 +107,7 @@ const onSubmit = async (data) => {
                   })}
                 />
                 {errors.plant && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.plant.message}
                   </p>
                 )}
@@ -120,14 +120,19 @@ const onSubmit = async (data) => {
                 <Input
                   type="number"
                   placeholder="Yield in ml"
+                  onWheel={(e) => e.target.blur()}
                   className="focus:shadow-[0px_0px_24px_5px_rgba(253,139,223,1)] mt-2"
                   {...register("yield", {
                     required: "Yield is required",
                     valueAsNumber: true,
+                    min: {
+                      value: 1,
+                      message: "Quantity must be greater than 0",
+                    },
                   })}
                 />
                 {errors.yield && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.yield.message}
                   </p>
                 )}
@@ -188,7 +193,7 @@ const onSubmit = async (data) => {
         </button>
 
         <button
-          onClick={() => navigate(`/certificate/create/${createdBatch._id}`)}
+          onClick={() => navigate(`/certificates/${createdBatch._id}`)}
           className="
             bg-white
             text-green-500

@@ -206,10 +206,11 @@ export default function Signup() {
             <span className="material-symbols-outlined text-pink-400" style={{ fontSize: window.innerWidth < 768 ? "24px" : "50px" }}>
               local_florist
             </span>
-
+            <Link to="/">
             <h1 className="text-5xl font-bold tracking-wide font-prompt">
               HerbalTrace
             </h1>
+            </Link>
           </div>
           <h2 className="text-3xl font-semibold leading-snug mb-4">
             Simplify Essential Oil Production Management

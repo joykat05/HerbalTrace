@@ -149,7 +149,7 @@ export default function DispatchForm() {
                 </datalist>
 
                 {errors.batchId && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.batchId.message}
                   </p>
                 )}
@@ -174,7 +174,7 @@ export default function DispatchForm() {
                 />
 
                 {errors.buyerName && (
-                  <p className="text-red-400 text-sm">
+                 <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.buyerName.message}
                   </p>
                 )}
@@ -205,7 +205,7 @@ export default function DispatchForm() {
                 />
 
                 {errors.quantity && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.quantity.message}
                   </p>
                 )}
