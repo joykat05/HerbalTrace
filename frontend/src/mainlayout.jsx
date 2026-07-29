@@ -4,9 +4,9 @@ import Footer from "./components/footer";
 
 function MainLayout({ dark, setDark }) {
   return (
-   <div className="flex flex-col min-h-screen">
-    <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10
+    <div className="relative flex flex-col min-h-screen">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-10
         brightness-80
         dark:brightness-40 blur-2xs"
         style={{ backgroundImage: "url('/content/home-bg-img.jpg')" }}
@@ -26,5 +26,4 @@ function MainLayout({ dark, setDark }) {
     </div>
   );
 }
-
 export default MainLayout;

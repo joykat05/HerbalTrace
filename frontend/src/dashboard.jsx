@@ -45,15 +45,17 @@ export default function Dashboard(){
             <Loader size={200}/>
           </div>);
         }else{
+           const hasBatches = dashboard.kpis.totalBatches > 0;
+
     return(
         <>
         <div className="flex gap-4 max-md:gap-0.5">
         <Sidebar />
         <div className="flex-1 overflow-x-hidden">
-            <div className="rounded-2xl bg-linear-to-r backdrop-blur-xs from-green-200/200 via-white to-green-50/200 dark:from-green-900/150 dark:via-green-900 dark:to-gray-700/200 p-8 ml-2 mr-3 mt-5 mb-5 max-lg:ml-1 max-md:ml-1 max-md:p-3">
+            <div className="rounded-2xl bg-linear-to-r backdrop-blur-sm from-green-200/200 via-white to-green-50/200 dark:from-green-900/150 dark:via-green-900 dark:to-gray-700/200 p-8 ml-2 mr-3 mt-5 mb-5 max-lg:ml-1 max-md:ml-1 max-md:p-3">
             <p className="text-green-900 dark:text-green-300 text-4xl max-md:text-2xl font-prompt">Welcome, {dashboard.user.name}</p>
             <div className="flex justify-between max-md:flex-col max-md:gap-2 text-green-800 dark:text-green-300 text-2xl max-md:text-sm font-prompt">
-                 <p >Orgaization: {dashboard.user.organization}</p>
+                 <p >Organization: {dashboard.user.organization}</p>
             <p >{dashboard.user.role}</p>
             </div>
            
@@ -83,6 +85,8 @@ export default function Dashboard(){
                 >
                 </Card>
             </div>
+            {hasBatches ? (
+              <>
             <div className="w-full overflow-hidden mt-4">
                <StatusChart data={dashboard.statusChart}/>
             </div>
@@ -149,8 +153,30 @@ export default function Dashboard(){
                 </div>
                 
             </div>
+            </>
+            ) : (
+                              <div className="flex flex-col items-center justify-center text-center gap-3 mt-10 mb-10 mx-4 p-10 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-white/80 dark:bg-gray-800/40">
+                    <span className="material-symbols-outlined text-green-400" style={{ fontSize: "48px" }}>
+                        science
+                    </span>
+                    <p className="text-2xl font-prompt text-green-900 dark:text-green-300">
+                        No batches yet
+                    </p>
+                    <p className="text-md text-gray-500 dark:text-gray-400 max-w-md font-prompt">
+                        Once you start adding batches, your production charts and insights will show up here.
+                    </p>
+                    <Link
+                        to="/addbatch"
+                        className="mt-2 px-4 py-2 rounded-xl bg-green-600 text-white text-xl hover:bg-green-700 transition-colors font-prompt"
+                    >
+                        Add your first batch
+                    </Link>
+                </div>
+            )}
         </div>
         </div>
         </>
-    );}
+    );
+}
+
 }

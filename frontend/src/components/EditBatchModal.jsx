@@ -79,7 +79,7 @@ export default function EditBatchModal({
 
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-            <div className="w-150 rounded-2xl bg-gray-900/80 border border-green-700 p-8 shadow-[0px_0px_24px_5px_rgba(46,255,157,1)]">
+            <div className="w-150 max-md:w-80 rounded-2xl bg-gray-900/80 border border-green-700 p-8 shadow-[0px_0px_24px_5px_rgba(46,255,157,1)]">
 
                 <h2 className="text-3xl font-prompt text-white mb-6">
                     Edit Batch
