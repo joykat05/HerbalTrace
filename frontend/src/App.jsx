@@ -16,6 +16,7 @@ import Certificate from './AddCertificate'
 import DispatchForm from './AddDispatch'
 import AIInsights from './Aifeature'
 import Profile from './profile'
+import ViewCert from './ViewCert'
 
 function App({ dark, setDark }) {
   return (
@@ -33,9 +34,11 @@ function App({ dark, setDark }) {
           <Route path="certificates" element={<Certificate />} />
            <Route path="certificates/:batchId" element={<Certificate />} />
           <Route path="dispatch" element={<DispatchForm />} />
+          <Route path="dispatch/:batchId" element={<DispatchForm />} />
           <Route path="ai-insights" element={<AIInsights />} />
         </Route>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/seecert/:batchId" element={<ViewCert />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/signup" element={<Signup />} />

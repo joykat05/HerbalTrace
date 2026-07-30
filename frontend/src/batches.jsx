@@ -5,6 +5,7 @@ import { Input, Modal, showToast } from "./components/ui";
 import EditBatchModal from "./components/EditBatchModal";
 
 const CERT_ELIGIBLE_STATUSES = new Set(["certified", "partially_dispatched", "dispatched"]);
+const DISPATCH_ELIGIBLE_STATUSES = new Set(["certified", "partially_dispatched"]);
 
 export default function Batches() {
     const navigate = useNavigate();
@@ -105,12 +106,14 @@ export default function Batches() {
         } 
     };
 
-    const displayedBatches =
-        selectionMode === "certificate"
-            ? batches.filter((b) => b.status === "pending")
-            : selectionMode === "viewcert"
-            ? batches.filter((b) => CERT_ELIGIBLE_STATUSES.has(b.status))
-            : batches;
+   const displayedBatches =
+    selectionMode === "certificate"
+        ? batches.filter((b) => b.status === "pending")
+        : selectionMode === "dispatch"
+        ? batches.filter((b) => DISPATCH_ELIGIBLE_STATUSES.has(b.status))
+        : selectionMode === "viewcert"
+        ? batches.filter((b) => CERT_ELIGIBLE_STATUSES.has(b.status))
+        : batches;
 
     const statusLabel = (status) =>
         status === "partially_dispatched" ? "Partially Dispatched"
@@ -118,11 +121,13 @@ export default function Batches() {
         : status.charAt(0).toUpperCase() + status.slice(1);
 
     const emptyMessage =
-        selectionMode === "certificate"
-            ? "No batches awaiting certification."
-            : selectionMode === "viewcert"
-            ? "No certified batches found."
-            : "No batches found.";
+    selectionMode === "certificate"
+        ? "No batches awaiting certification."
+        : selectionMode === "dispatch"
+        ? "No batches available for dispatch."
+        : selectionMode === "viewcert"
+        ? "No certified batches found."
+        : "No batches found.";
 
     return (
         <>
@@ -206,32 +211,33 @@ export default function Batches() {
                     </div>
 
                     {/* SELECTION BANNER */}
-                    {selectionMode && (
-                        <div className="w-full max-w-4xl mt-3 flex items-center justify-between gap-3 bg-pink-900/40 border border-pink-500/50 rounded-xl px-4 py-3 font-prompt text-white ">
-                            <span>
-                                Select a batch for{" "}
-                                {selectionMode === "certificate" ? "Add Certificate"
-                                    : selectionMode === "dispatch" ? "Add Dispatch"
-                                    : selectionMode === "viewcert" ? "View Certificate"
-                                    : "Track Batch"}
-                            </span>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={cancelSelection}
-                                    className="px-3 py-1.5 rounded-lg bg-gray-600 hover:bg-gray-500 transition"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={confirmSelection}
-                                    disabled={!selectedBatchId}
-                                    className="px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 disabled:opacity-40 transition"
-                                >
-                                    Continue
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                   {/* SELECTION BANNER */}
+{selectionMode && (
+    <div className="w-full max-w-4xl mt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3 bg-pink-900/40 border border-pink-500/50 rounded-xl px-4 py-3 font-prompt text-white">
+        <span className="text-sm md:text-base break-words">
+            Select a batch for{" "}
+            {selectionMode === "certificate" ? "Add Certificate"
+                : selectionMode === "dispatch" ? "Add Dispatch"
+                : selectionMode === "viewcert" ? "View Certificate"
+                : "Track Batch"}
+        </span>
+        <div className="flex gap-2 shrink-0 self-end md:self-auto">
+            <button
+                onClick={cancelSelection}
+                className="px-3 py-1.5 rounded-lg bg-gray-600 hover:bg-gray-500 transition whitespace-nowrap"
+            >
+                Cancel
+            </button>
+            <button
+                onClick={confirmSelection}
+                disabled={!selectedBatchId}
+                className="px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 disabled:opacity-40 transition whitespace-nowrap"
+            >
+                Continue
+            </button>
+        </div>
+    </div>
+)}
 
                     {/* TABLE - desktop */}
                     <div className="mt-8 w-full max-w-5xl overflow-x-auto rounded-2xl border border-green-700/40 hidden md:block">
@@ -274,7 +280,7 @@ export default function Batches() {
                                             <td className="px-4 py-3">{batch.plant}</td>
                                             <td className="px-4 py-3">{batch.yield.quantity} {batch.yield.unit}</td>
                                             <td className="px-4 py-3">{batch.availableQuantity}</td>
-                                            <td className="px-4 py-3 capitalize whitespace-normal break-words">
+                                            <td className="px-4 py-3 capitalize whitespace-normal wrap-break-word">
                                                 {statusLabel(batch.status)}
                                             </td>
                                             <td className="px-4 py-3">

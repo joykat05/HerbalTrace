@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Sidebar from "./components/sidebar";
 import { Input, Loader, showToast } from "./components/ui";
 import DatePicker from "react-datepicker";
@@ -14,11 +15,15 @@ const formatISO = (date) =>
     : "";
 
 export default function DispatchForm() {
+  const { batchId } = useParams();
+
   const {
     register,
     handleSubmit,
     control,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -26,80 +31,117 @@ export default function DispatchForm() {
   const [batchOptions, setBatchOptions] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState(null);
 
-  const searchBatches = async (value) => {
-  if (!value.trim()) {
-    setBatchOptions([]);
-    return;
-  }
+  useEffect(() => {
+    if (!batchId) return;
 
-  try {
-    const response = await fetch(
-       `http://localhost:5000/batches/search?query=${encodeURIComponent(value)}&status=certified,partially_dispatched`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    const loadBatch = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/batches/${batchId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const batch = await response.json();
+
+        if (!response.ok) {
+          throw new Error(batch.message || "Failed to load batch");
+        }
+
+        setSelectedBatch(batch);
+        setValue("batchId", `${batch.batchNumber} (${batch.name})`);
+      } catch (err) {
+        showToast(err.message || "Could not load batch", "error");
+        console.error(err);
       }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to search batches");
-    }
-
-    setBatchOptions(result);
-  } catch (err) {
-    console.error(err);
-  }
-};
-  const onSubmit = async (data) => {
-  try {
-    setLoading(true);
-
-    if (!selectedBatch) {
-      throw new Error("Please select a valid batch.");
-    }
-
-    const payload = {
-      buyerName: data.buyerName,
-      quantity: {
-        value: Number(data.quantity),
-        unit: "ml",
-      },
-      dispatchedAt: formatISO(data.dispatchedAt),
     };
 
-    const response = await fetch(
-      `http://localhost:5000/batches/${selectedBatch._id}/dispatch`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    loadBatch();
+  }, [batchId, setValue]);
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to create dispatch");
+  const searchBatches = async (value) => {
+    if (!value.trim()) {
+      setBatchOptions([]);
+      return;
     }
 
-    showToast("Dispatch added successfully!");
+    try {
+      const response = await fetch(
+        `http://localhost:5000/batches/search?query=${encodeURIComponent(value)}&status=certified,partially_dispatched`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    reset();
-    setSelectedBatch("");
-    setBatchOptions([]);
+      const result = await response.json();
 
-  } catch (err) {
-    showToast(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to search batches");
+      }
+
+      setBatchOptions(result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+
+      if (!selectedBatch) {
+        throw new Error("Please select a valid batch.");
+      }
+
+      const payload = {
+        buyerName: data.buyerName,
+        quantity: {
+          value: Number(data.quantity),
+          unit: "ml",
+        },
+        dispatchedAt: formatISO(data.dispatchedAt),
+      };
+
+      const response = await fetch(
+        `http://localhost:5000/batches/${selectedBatch._id}/dispatch`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to create dispatch");
+      }
+
+      showToast("Dispatch added successfully!");
+
+      if (batchId) {
+        reset({
+          batchId: getValues("batchId"),
+          buyerName: "",
+          quantity: "",
+          dispatchedAt: null,
+        });
+      } else {
+        reset();
+        setSelectedBatch(null);
+        setBatchOptions([]);
+      }
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex gap-4 max-md:gap-0.5">
@@ -128,36 +170,48 @@ export default function DispatchForm() {
                   Batch ID
                 </label>
 
-                <Input
-                  list="batchList"
-                  placeholder="Search Batch Number..."
-                  className="mt-2 w-full"
-                  autoComplete="off"
-                  {...register("batchId", {
-                    required: "Batch ID is required",
-                  })}
-                  onChange={(e) => {
-                    const value = e.target.value;
+                {batchId ? (
+                  <Input
+                    readOnly
+                    className="mt-2 w-full"
+                    {...register("batchId", {
+                      required: "Batch ID is required",
+                    })}
+                  />
+                ) : (
+                  <>
+                    <Input
+                      list="batchList"
+                      placeholder="Search Batch Number..."
+                      className="mt-2 w-full"
+                      autoComplete="off"
+                      {...register("batchId", {
+                        required: "Batch ID is required",
+                      })}
+                      onChange={(e) => {
+                        const value = e.target.value;
 
-                    searchBatches(value);
+                        searchBatches(value);
 
-                    const selected = batchOptions.find(
-                        (batch) =>
-                        `${batch.batchNumber} (${batch.name})` === value
-                    );
+                        const selected = batchOptions.find(
+                          (batch) =>
+                            `${batch.batchNumber} (${batch.name})` === value
+                        );
 
-                    setSelectedBatch(selected || null);
-                    }}
-                />
-
-               <datalist id="batchList">
-                {batchOptions.map((batch) => (
-                    <option
-                    key={batch._id}
-                    value={`${batch.batchNumber} (${batch.name})`}
+                        setSelectedBatch(selected || null);
+                      }}
                     />
-                ))}
-                </datalist>
+
+                    <datalist id="batchList">
+                      {batchOptions.map((batch) => (
+                        <option
+                          key={batch._id}
+                          value={`${batch.batchNumber} (${batch.name})`}
+                        />
+                      ))}
+                    </datalist>
+                  </>
+                )}
 
                 {errors.batchId && (
                   <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
@@ -165,10 +219,10 @@ export default function DispatchForm() {
                   </p>
                 )}
                 {selectedBatch && (
-                    <p className="text-green-300 font-prompt max-md:text-sm">
-                        Available Quantity: <strong>{selectedBatch.availableQuantity} ml</strong>
-                    </p>
-                    )}
+                  <p className="text-green-300 font-prompt max-md:text-sm">
+                    Available Quantity: <strong>{selectedBatch.availableQuantity} ml</strong>
+                  </p>
+                )}
 
                 {/* Buyer Name */}
 
@@ -185,7 +239,7 @@ export default function DispatchForm() {
                 />
 
                 {errors.buyerName && (
-                 <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
+                  <p className="text-red-400 text-sm bg-black/50 rounded-2xl p-1">
                     {errors.buyerName.message}
                   </p>
                 )}
@@ -199,7 +253,7 @@ export default function DispatchForm() {
                 <Input
                   type="number"
                   onWheel={(e) => e.target.blur()}
-                   max={selectedBatch?.availableQuantity}
+                  max={selectedBatch?.availableQuantity}
                   placeholder="Enter quantity"
                   className="mt-2 w-full"
                   {...register("quantity", {
@@ -208,11 +262,11 @@ export default function DispatchForm() {
                       value: 1,
                       message: "Quantity must be greater than 0",
                     },
-                validate: (value) =>
-                    !selectedBatch ||
-                    value <= selectedBatch.availableQuantity ||
-                    `Only ${selectedBatch.availableQuantity} ml available`,
-                })}
+                    validate: (value) =>
+                      !selectedBatch ||
+                      value <= selectedBatch.availableQuantity ||
+                      `Only ${selectedBatch.availableQuantity} ml available`,
+                  })}
                 />
 
                 {errors.quantity && (

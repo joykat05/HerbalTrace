@@ -1,6 +1,8 @@
 const express = require("express");
 const Batch = require("../models/batchmodel");
 const Organization = require("../models/orgmodel");
+const Dispatch = require("../models/dispatchmodel");
+const path = require("path");
 
 const router = express.Router();
 const multer = require("multer");
@@ -8,9 +10,6 @@ const multer = require("multer");
 const upload = multer({
   dest: "uploads/"
 });
-
-
-
 
 const generateBatchNumber = async (orgId) => {
   const org = await Organization.findByIdAndUpdate(
@@ -321,8 +320,39 @@ router.post("/:id/certificate", upload.single("pdf"), async (req, res, next) => 
     next(err);
   }
 });
+router.get("/:id/certificate/pdf", async (req, res, next) => {
+  try {
+    const batch = await Batch.findOne({
+      _id: req.params.id,
+      organization: req.user.orgId,
+    }).select("certificate.pdf");
 
-const Dispatch = require("../models/dispatchmodel");
+    if (!batch?.certificate?.pdf) {
+      return res.status(404).json({ message: "Certificate PDF not found" });
+    }
+
+    // certificate.pdf might be a full path (old uploads) or just a filename
+    // (new uploads) — path.basename() normalizes both cases safely.
+    const filename = path.basename(batch.certificate.pdf);
+    const filePath = path.join(__dirname, "..", "uploads", filename);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "inline");
+
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        if (!res.headersSent) {
+          res.status(404).json({ message: "File missing on disk" });
+        }
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 // POST /batches/:id/dispatch
 router.post("/:id/dispatch", async (req, res, next) => {
