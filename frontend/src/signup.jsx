@@ -57,14 +57,15 @@ export default function Signup() {
   };
 
   return (
-    
-    <div className="justify-center items-center flex m-2 p-2 rounded-2xl  bg-[url(/content/flowers3.jpg)] bg-cover brightness-90  dark:brightness-50">
-      <div className=" bg-linear-to-r from-green-600/80 to-green-800/80 w-4xl rounded-2xl flex gap-2" >
+
+    <div className="justify-center items-center flex m-2 p-2 rounded-2xl bg-[url(/content/flowers3.jpg)] bg-cover bg-center brightness-90 dark:brightness-50">
+      <div className="bg-linear-to-r from-green-600/80 to-green-800/80 w-full lg:w-4xl rounded-2xl flex flex-col lg:flex-row items-center lg:items-stretch gap-2 p-4 lg:p-0">
+
       <Card
         title={
           <div className="flex items-center gap-2">
             Create an Account
-            <span className="material-symbols-outlined bg-green-300 text-white rounded-full p-2 text-[40px]">
+            <span className="material-symbols-outlined bg-green-300 text-white rounded-full p-2 text-[32px] lg:text-[40px]">
               how_to_reg
             </span>
           </div>
@@ -79,7 +80,7 @@ export default function Signup() {
 
         <form
           onSubmit={handleSubmit(onSubmit, onError)}
-          className="p-6 w-full grid gap-4"
+          className="p-4 lg:p-6 w-full grid gap-4"
         >
           <Input
             placeholder="Enter your name"
@@ -138,8 +139,8 @@ export default function Signup() {
             </span>
             </button>
           </div>
-          
-          
+
+
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password.message}</p>
           )}
@@ -185,7 +186,7 @@ export default function Signup() {
          <div className="flex justify-center items-center gap-2 mb-4 text-gray-500">
           <hr className="w-full"/>OR<hr className="w-full"/>
         </div>
-       
+
                <button
           onClick={() => {
             window.location.href =
@@ -196,14 +197,23 @@ export default function Signup() {
           Continue with Google
           <FaGoogle size={22} className="max-md:text-[16px] text-green-400" />
         </button>
-               
+
+        {/* Mobile/tablet-only login link since the side panel is hidden below lg */}
+        <p className="text-sm text-center mt-3 text-white/90 lg:hidden">
+          Already have an account?{" "}
+          <Link to="/login" className="text-pink-300 underline">
+            Log in
+          </Link>
+        </p>
+
       </Card>
-      
-      <div className="w-2xl pt-10 pr-5">
+
+      {/* Marketing / feature panel — hidden on mobile & tablet, shown from lg (1024px) up */}
+      <div className="hidden lg:block w-2xl pt-10 pr-5">
        <div className="max-w-md text-white">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
-            <span className="material-symbols-outlined text-pink-400" style={{ fontSize: window.innerWidth < 768 ? "24px" : "50px" }}>
+            <span className="material-symbols-outlined text-pink-400 text-[50px]">
               local_florist
             </span>
             <Link to="/">
@@ -244,10 +254,10 @@ export default function Signup() {
           Already have an account?
           <br/>
           <Link to="/login"><button className="text-pink-300 cursor-pointer border-2 m-2 rounded-xl border-pink-300 bg-none p-2">Log in</button></Link>
-          
+
         </p>
         </div>
-      
+
       </div>
     </div>
   );
