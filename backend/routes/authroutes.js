@@ -142,7 +142,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "/login",
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
   }),
   async (req, res) => {
    // Existing user
@@ -159,7 +159,7 @@ if (!req.user.isNewUser) {
     );
 
     return res.redirect(
-      `http://localhost:5173/oauth-success?token=${token}`
+      `${process.env.FRONTEND_URL}/oauth-success?token=${token}`
     );
 }
 const tempToken = jwt.sign(
@@ -175,7 +175,7 @@ const tempToken = jwt.sign(
 );
 
 return res.redirect(
-  `http://localhost:5173/complete-profile?token=${tempToken}`
+  `${process.env.FRONTEND_URL}/complete-profile?token=${tempToken}`
 );
   }
 );
