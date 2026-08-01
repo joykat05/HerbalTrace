@@ -23,7 +23,7 @@ export default function Login() {
     try {
       console.log("LOGIN DATA:", data);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}api/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export default function Login() {
                 <button
           onClick={() => {
             window.location.href =
-              `${import.meta.env.VITE_API_URL}api/auth/google`;
+              `${import.meta.env.VITE_API_URL}/api/auth/google`;
           }}
           className="w-full border-2 border-green-300 p-2 font-prompt hover:text-gray-700 text-white rounded-2xl flex gap-4 justify-center items-center bg-green-600 hover:bg-white"
         >

@@ -16,7 +16,7 @@ export default function ViewCert() {
         setLoading(true);
         setError("");
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}batches/${batchId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/batches/${batchId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -51,7 +51,7 @@ export default function ViewCert() {
 const handleViewPdf = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}batches/${batch._id}/certificate/pdf`,
+      `${import.meta.env.VITE_API_URL}/batches/${batch._id}/certificate/pdf`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

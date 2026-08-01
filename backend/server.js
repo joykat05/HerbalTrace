@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const authRoutes = require("./routes/authroutes");
-const batchRoutes = require("./routes/batchRoutes");
+const batchRoutes = require("./routes/batchroutes");
 const authMiddleware = require("./middleware/authmiddleware");
 const errorHandler= require("./middleware/errorhandler");
 const authLimiter = require("./middleware/rateLimiter");

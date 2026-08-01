@@ -36,7 +36,7 @@ export default function DispatchForm() {
 
     const loadBatch = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}batches/${batchId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/batches/${batchId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -67,7 +67,7 @@ export default function DispatchForm() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}batches/search?query=${encodeURIComponent(value)}&status=certified,partially_dispatched`,
+        `${import.meta.env.VITE_API_URL}/batches/search?query=${encodeURIComponent(value)}&status=certified,partially_dispatched`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -105,7 +105,7 @@ export default function DispatchForm() {
       };
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}batches/${selectedBatch._id}/dispatch`,
+        `${import.meta.env.VITE_API_URL}/batches/${selectedBatch._id}/dispatch`,
         {
           method: "POST",
           headers: {

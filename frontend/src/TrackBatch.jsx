@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "./components/sidebar";
 import { Loader } from "./components/ui";
 
-const API_BASE = `${import.meta.env.VITE_API_URL}batches`;
+const API_BASE = `${import.meta.env.VITE_API_URL}/batches`;
 
 const STATUS_META = {
   pending: {

@@ -23,7 +23,7 @@ export default function Batches() {
 
     const fetchBatches = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}batches`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/batches`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
@@ -41,7 +41,7 @@ export default function Batches() {
                 return;
             }
             const res = await fetch(
-                `${import.meta.env.VITE_API_URL}batches/search/filter?search=${encodeURIComponent(search)}`,
+                `${import.meta.env.VITE_API_URL}/batches/search/filter?search=${encodeURIComponent(search)}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             const data = await res.json();
@@ -55,7 +55,7 @@ export default function Batches() {
     const deleteBatch = async () => {
         if (!deletingBatch) return;
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}batches/${deletingBatch._id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/batches/${deletingBatch._id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
