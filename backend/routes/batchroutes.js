@@ -89,6 +89,34 @@ router.get("/dashboard", async (req, res, next) => {
       (sum, batch) => sum + (batch.availableQuantity || 0),
       0
     );
+    // ==========================
+// Low Yield Alerts
+// ==========================
+const LOW_YIELD_THRESHOLD = 0.8;      // flag if < 80% of average
+const MIN_BATCHES_FOR_DETECTION = 4;  // don't judge off tiny sample sizes
+
+let alerts = [];
+
+if (totalBatches >= MIN_BATCHES_FOR_DETECTION && averageYield > 0) {
+  alerts = batches
+    .filter((batch) => (batch.yield?.quantity || 0) < averageYield * LOW_YIELD_THRESHOLD)
+    .map((batch) => {
+      const yieldQty = batch.yield?.quantity || 0;
+      const percentBelowAverage = Math.round(
+        ((averageYield - yieldQty) / averageYield) * 100
+      );
+
+      return {
+        batchId: batch._id,
+        batchNumber: batch.batchNumber,
+        name: batch.name,
+        plant: batch.plant,
+        yield: yieldQty,
+        percentBelowAverage,
+      };
+    })
+    .sort((a, b) => b.percentBelowAverage - a.percentBelowAverage);
+}
 
     // ==========================
     // Status Chart
@@ -152,6 +180,7 @@ router.get("/dashboard", async (req, res, next) => {
 
       statusChart,
       yieldChart,
+      alerts,
     });
   } catch (err) {
     next(err);
@@ -179,9 +208,9 @@ router.get("/search", async (req, res, next) => {
     }
 
     const batches = await Batch.find(filter)
-      .select("_id batchNumber name availableQuantity")
+      .select("_id batchNumber name availableQuantity status")
       .sort({ batchNumber: 1 })
-      .limit(10);
+      .limit(query ? 10 : 50); 
 
     res.json(batches);
   } catch (err) {
@@ -420,6 +449,30 @@ router.post("/:id/dispatch", async (req, res, next) => {
       batch,
     });
 
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /batches/:id/dispatches
+router.get("/:id/dispatches", async (req, res, next) => {
+  try {
+    // confirm the batch belongs to this org before returning its dispatches
+    const batch = await Batch.findOne({
+      _id: req.params.id,
+      organization: req.user.orgId,
+    }).select("_id");
+
+    if (!batch) {
+      return res.status(404).json({ message: "Batch not found" });
+    }
+
+    const dispatches = await Dispatch.find({
+      batch: batch._id,
+      organization: req.user.orgId,
+    }).sort({ dispatchedAt: -1 });
+
+    res.json(dispatches);
   } catch (err) {
     next(err);
   }

@@ -26,13 +26,6 @@ export default function Sidebar(){
             : "w-0"}`}
         >
         <div className="flex-1">
-             <p className="font-prompt text-2xl max-md:text-lg p-2 mt-2 ">
-            <Link to="/dashboard" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200 ">
-        <span className="material-symbols-outlined text-[30px]!"
-            >
-                dashboard
-            </span>
-        Dashboard</Link></p>
          <p className="font-prompt text-2xl max-md:text-lg p-2 mt-2 ">
             <Link to="/batches" className="flex items-start gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200 ">
         <span className="material-symbols-outlined "
@@ -65,7 +58,7 @@ export default function Sidebar(){
                 </Link></p> 
 
          <p className="font-prompt text-2xl max-md:text-lg p-2 mt-2">
-            <Link to="/" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200">
+            <Link to="/trackbatch" className="flex items-center gap-2 hover:text-pink-300 hover:animate-pulse transition-all duration-200">
                 <span className="material-symbols-outlined "
                     style = {{fontSize : "30px"}}>
                         conversion_path

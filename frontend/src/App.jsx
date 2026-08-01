@@ -17,6 +17,7 @@ import DispatchForm from './AddDispatch'
 import AIInsights from './Aifeature'
 import Profile from './profile'
 import ViewCert from './ViewCert'
+import TrackBatch from './TrackBatch'
 
 function App({ dark, setDark }) {
   return (
@@ -36,6 +37,8 @@ function App({ dark, setDark }) {
           <Route path="dispatch" element={<DispatchForm />} />
           <Route path="dispatch/:batchId" element={<DispatchForm />} />
           <Route path="ai-insights" element={<AIInsights />} />
+           <Route path="trackbatch" element={<TrackBatch />} />
+           <Route path="trackbatch/:batchId" element={<TrackBatch />} />
         </Route>
         <Route path="/profile" element={<Profile />} />
         <Route path="/seecert/:batchId" element={<ViewCert />} />

@@ -3,20 +3,42 @@ import Card from "./components/card";
 import { Link } from "react-router";
 import StatusChart from "./components/StatusChart";
 import YieldChart from "./components/linechart";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Loader } from "./components/ui";
 import { useNavigate } from "react-router";
+import { showToast } from "./components/ui";
+
 export default function Dashboard(){
     const [dashboard, setDashboard] = useState(null);
+    const [alertsExpanded, setAlertsExpanded] = useState(() => {
+        const stored = localStorage.getItem("alertsExpanded");
+        return stored === null ? true : stored === "true"; // default: expanded
+      });
+
+      const toggleAlerts = () => {
+        const updated = !alertsExpanded;
+        setAlertsExpanded(updated);
+        localStorage.setItem("alertsExpanded", String(updated));
+      };
+
+    const [showAiFloater, setShowAiFloater] = useState(false);
+    const aiCardRef = useRef(null);
+
     const navigate = useNavigate();
-    useEffect(() => {
+
+   const hasFetched = useRef(false);
+
+useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
     const fetchDashboard = async () => {
         try {
             const token = localStorage.getItem("token");
             if (!token) {
             setTimeout(() => {
                 navigate("/login");
-            }, 2000); // show loader for 2 seconds
+            }, 2000);
             return;
         }
 
@@ -32,14 +54,37 @@ export default function Dashboard(){
 
             const data = await response.json();
             setDashboard(data);
+            if (data.alerts?.length > 0) {
+              showToast(
+                `${data.alerts.length} batch${data.alerts.length > 1 ? "es" : ""} showing low yield`,
+                "warning"
+              );
+            }
 
         } catch (err) {
             console.error(err);
         }
     };
 
-        fetchDashboard();
-    }, []);
+    fetchDashboard();
+}, []);
+
+    // Watch AI card visibility to toggle the floater
+    useEffect(() => {
+      if (!aiCardRef.current) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setShowAiFloater(!entry.isIntersecting);
+        },
+        { threshold: 0.3 }
+      );
+
+      observer.observe(aiCardRef.current);
+
+      return () => observer.disconnect();
+    }, [dashboard]);
+
         if (!dashboard) {
             return (<div className="flex justify-center my-4 transition-all duration-150 bg-white/90 rounded-4xl m-5 h-screen">
             <Loader size={200}/>
@@ -58,8 +103,35 @@ export default function Dashboard(){
                  <p >Organization: {dashboard.user.organization}</p>
             <p >{dashboard.user.role}</p>
             </div>
-           
+
             </div>
+                           {dashboard.alerts?.length > 0 && (
+  <div className="mx-2 mb-4 rounded-xl border border-amber-400/30 bg-amber-200/60 backdrop-blur-2xl p-4 font-prompt">
+    <button
+      onClick={toggleAlerts}
+      className="flex w-full items-center justify-between font-semibold text-amber-700"
+    >
+      <span className="flex items-center gap-2">
+        <span className="material-symbols-outlined">warning</span>
+        Low Yield Alert{dashboard.alerts.length > 1 ? "s" : ""} ({dashboard.alerts.length})
+      </span>
+      <span className="material-symbols-outlined transition-transform duration-200"
+            style={{ transform: alertsExpanded ? "rotate(180deg)" : "rotate(0deg)" }}>
+        expand_more
+      </span>
+    </button>
+
+    {alertsExpanded && (
+      <ul className="mt-3 space-y-1 text-sm text-amber-700 dark:text-amber-300">
+        {dashboard.alerts.slice(0, 5).map((a) => (
+          <li key={a.batchId}>
+            {a.batchNumber} ({a.plant}) — {a.yield}ml, {a.percentBelowAverage}% below average
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+)}
             <div className="flex gap-3 mr-0 max-md:mr-2">
                   <Card title={
                     <>
@@ -92,6 +164,7 @@ export default function Dashboard(){
             </div>
             <div className="grid grid-cols-7 gap-4 m-4 max-md:grid-cols-1 md:grid-cols-2 xl:grid-cols-7">
  <div
+    ref={aiCardRef}
     onClick={() => navigate("/ai-insights")}
     className="col-span-2 cursor-pointer rounded-2xl
                bg-gradient-to-br from-black/90 to-green-900/90
@@ -131,6 +204,7 @@ export default function Dashboard(){
 
     {/* Description */}
     <div className="relative mt-8">
+           
       <p className="text-sm leading-6 text-gray-200">
         Generate an AI-powered report with production summaries, top-performing plants, yield observations, and production trends.
       </p>
@@ -173,10 +247,27 @@ export default function Dashboard(){
                     </Link>
                 </div>
             )}
+
+            {showAiFloater && (
+              <button
+                onClick={() =>
+                  aiCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+                }
+                className="fixed bottom-6 right-6 z-40 flex items-center gap-2
+                           rounded-full bg-gradient-to-br from-black/90 to-green-900/90
+                           border border-emerald-400/30 shadow-lg shadow-black/30
+                           px-5 py-3 font-prompt text-white
+                           hover:-translate-y-1 hover:border-emerald-400/60
+                           transition-all duration-300 animate-bounce-slow"
+              >
+                <span className="material-symbols-outlined text-emerald-300">psychiatry</span>
+                <span className="hidden sm:inline">AI Insights</span>
+
+              </button>
+            )}
         </div>
         </div>
         </>
     );
 }
-
 }

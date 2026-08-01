@@ -1,8 +1,14 @@
 import '../app.css'
-import { Link } from 'react-router'
+import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router'
 
 function Navbar({ dark, setDark }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
 
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, [location.pathname]);
 
   return (
     <div
@@ -38,11 +44,21 @@ function Navbar({ dark, setDark }) {
           </button>
         </Link>
 
-        <Link to="/login">
-          <button className="hover:text-green-600 p-2 max-md:p-1 max-md:text-[10px] max-md:px-1 rounded-lg dark:hover:text-white whitespace-nowrap">
-            Log in
-          </button>
-        </Link>
+        {!isLoggedIn && (
+          <Link to="/login">
+            <button className="hover:text-green-600 p-2 max-md:p-1 max-md:text-[10px] max-md:px-1 rounded-lg dark:hover:text-white whitespace-nowrap">
+              Log in
+            </button>
+          </Link>
+        )}
+
+        {isLoggedIn && (
+          <Link to="/dashboard">
+            <button className="hover:text-green-600 p-2 max-md:p-1 max-md:text-[10px] max-md:px-1 rounded-lg dark:hover:text-white whitespace-nowrap">
+              Dashboard
+            </button>
+          </Link>
+        )}
       </div>
 
       {/* RIGHT */}
