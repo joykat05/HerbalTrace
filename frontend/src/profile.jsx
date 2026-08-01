@@ -23,7 +23,7 @@ export default function Profile() {
       return;
     }
 
-        const res = await fetch("http://localhost:5000/user/profile", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -38,7 +38,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
   const loadBatch = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/batches/${batchId}`,
+        `${import.meta.env.VITE_API_URL}batches/${batchId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +72,7 @@ const [selectedBatchId, setSelectedBatchId] = useState(batchId || null);
 
   try {
     const response = await fetch(
-      `http://localhost:5000/batches/search?query=${encodeURIComponent(value)}&status=pending`,
+      `${import.meta.env.VITE_API_URL}batches/search?query=${encodeURIComponent(value)}&status=pending`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -113,7 +113,7 @@ formData.append("expiryDate", formatISO(data.expiryDate));
     }
 
     const response = await fetch(
-      `http://localhost:5000/batches/${id}/certificate`,
+      `${import.meta.env.VITE_API_URL}batches/${id}/certificate`,
       {
         method: "POST",
         headers: {

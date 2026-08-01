@@ -43,7 +43,7 @@ export default function EditBatchModal({
     const updateBatch = async () => {
         try {
             const res = await fetch(
-                `http://localhost:5000/batches/${batch._id}`,
+                `${import.meta.env.VITE_API_URL}batches/${batch._id}`,
                 {
                     method: "PATCH",
                     headers: {

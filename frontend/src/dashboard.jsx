@@ -42,7 +42,7 @@ useEffect(() => {
             return;
         }
 
-            const response = await fetch("http://localhost:5000/batches/dashboard", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}batches/dashboard`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
