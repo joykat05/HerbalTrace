@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "./components/sidebar";
 import { Loader } from "./components/ui";
+import { isAdmin } from "./utils/auth";
 
 const API_BASE = `${import.meta.env.VITE_API_URL}/batches`;
 
@@ -207,6 +208,7 @@ function RecordDispatchButton({ batch }) {
 /* ---------- Add certificate button ---------- */
 function AddCertificateButton({ batch }) {
   if (batch.status !== "pending") return null;
+  if (!isAdmin()) return null; 
 
   return (
     <Link

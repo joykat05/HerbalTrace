@@ -154,7 +154,7 @@ export default function Signup() {
           >
             <option value="">Select a role</option>
             <option value="admin">Admin</option>
-            <option value="user">User</option>
+            <option value="sales">Sales</option>
           </select>
 
           {errors.role && (

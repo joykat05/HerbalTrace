@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { Loader } from "./components/ui";
 import { useNavigate } from "react-router";
 import { showToast } from "./components/ui";
+import { isAdmin } from "./utils/auth";
 
 export default function Dashboard(){
     const [dashboard, setDashboard] = useState(null);
@@ -91,6 +92,13 @@ useEffect(() => {
           </div>);
         }else{
            const hasBatches = dashboard.kpis.totalBatches > 0;
+           const admin = isAdmin();
+
+          const dispatchedCount = dashboard.statusChart?.reduce((sum, s) => {
+            return (s.name === "Partially Dispatched" || s.name === "Completely Dispatched")
+              ? sum + s.value
+              : sum;
+          }, 0) || 0;
 
     return(
         <>
@@ -105,7 +113,7 @@ useEffect(() => {
             </div>
 
             </div>
-                           {dashboard.alerts?.length > 0 && (
+                           {admin && dashboard.alerts?.length > 0 && (
   <div className="mx-2 mb-4 rounded-xl border border-amber-400/30 bg-amber-200/60 backdrop-blur-2xl p-4 font-prompt">
     <button
       onClick={toggleAlerts}
@@ -140,14 +148,25 @@ useEffect(() => {
                     </>
                 }>
                 </Card>
+                {admin ? (
                 <Card title={
                     <>
                     Average Yield
                     <p className="text-pink-400 text-3xl max-md:text-sm">{dashboard.kpis.averageYield} ml</p>
                     </>
                 }
-               >
+                >
                 </Card>
+              ) : (
+                <Card title={
+                    <>
+                    Dispatches
+                    <p className="text-pink-400 text-3xl max-md:text-sm">{dispatchedCount}</p>
+                    </>
+                }
+                >
+                </Card>
+              )}
                   <Card title={
                     <>
                     Available Qty
@@ -162,6 +181,7 @@ useEffect(() => {
             <div className="w-full overflow-hidden mt-4">
                <StatusChart data={dashboard.statusChart}/>
             </div>
+               {admin && (
             <div className="grid grid-cols-7 gap-4 m-4 max-md:grid-cols-1 md:grid-cols-2 xl:grid-cols-7">
  <div
     ref={aiCardRef}
@@ -227,12 +247,15 @@ useEffect(() => {
                 </div>
                 
             </div>
+             )}
             </>
             ) : (
                               <div className="flex flex-col items-center justify-center text-center gap-3 mt-10 mb-10 mx-4 p-10 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-white/80 dark:bg-gray-800/40">
                     <span className="material-symbols-outlined text-green-400" style={{ fontSize: "48px" }}>
                         science
                     </span>
+                    {admin ? (
+                      <>
                     <p className="text-2xl font-prompt text-green-900 dark:text-green-300">
                         No batches yet
                     </p>
@@ -245,10 +268,21 @@ useEffect(() => {
                     >
                         Add your first batch
                     </Link>
+                    </>
+                    ) : (
+                       <>
+            <p className="text-2xl font-prompt text-green-900 dark:text-green-300">
+                No batches yet
+            </p>
+            <p className="text-md text-gray-500 dark:text-gray-400 max-w-md font-prompt">
+                Your organization has no batches yet. Please wait for an admin to add one.
+            </p>
+          </>
+        )}
                 </div>
             )}
 
-            {showAiFloater && (
+            {admin && showAiFloater && (
               <button
                 onClick={() =>
                   aiCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
