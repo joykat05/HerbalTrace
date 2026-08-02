@@ -128,26 +128,26 @@ const askQuestion = async () => {
 
             <Sidebar />
 
-            <div className="flex-1 bg-black/60 min-h-screen p-8 m-2 rounded-2xl">
-                    <h1 className="text-4xl font-bold text-green-300 mb-6">
+            <div className="flex-1 bg-black/60 min-h-screen p-4 md:p-6 lg:p-8 m-2 rounded-2xl">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-green-300 mb-4 lg:mb-6">
                         AI Production Insights
                     </h1>
 
                     {loading && (
-                        <div className="flex justify-center mt-20">
+                        <div className="flex justify-center mt-12 lg:mt-20">
                            <Loader size={150}/>
                         </div>
                     )}
 
                     {error && (
-                        <div className="text-red-600 p-8">
+                        <div className="text-red-600 p-4 lg:p-8">
                             {error}
                         </div>
                     )}
 
                     {!loading && !error && (
                         
-                        <div className="bg-linear-to-r to-green-500/60 from-black/60 text-white font-prompt rounded-xl shadow-lg p-8 ">
+                        <div className="bg-linear-to-r to-green-500/60 from-black/60 text-white font-prompt rounded-xl shadow-lg p-4 md:p-6 lg:p-8 ">
 
                                                     {chat.map((msg, index) => (
 
@@ -155,14 +155,16 @@ const askQuestion = async () => {
                                     key={index}
                                     className={
                                         msg.role === "assistant"
-                                            ? "mb-6"
-                                            : "bg-green-900 rounded-lg p-4 my-4"
+                                            ? "mb-6 max-w-none"
+                                            : "bg-green-900 rounded-lg p-3 lg:p-4 my-4 max-w-[90%] md:max-w-[75%] ml-auto"
                                     }
                                 >
 
                                     {msg.role === "assistant"
-                                        ? <ReactMarkdown>{msg.content}</ReactMarkdown>
-                                        : <p>{msg.content}</p>
+                                        ? <div className="prose prose-invert max-w-none prose-sm md:prose-base">
+                                            <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                          </div>
+                                        : <p className="text-sm md:text-base break-words">{msg.content}</p>
                                     }
 
                                 </div>
@@ -173,7 +175,7 @@ const askQuestion = async () => {
         <Loader size={50} />
     </div>
 )}
-                            <div className="mt-8 flex gap-3">
+                            <div className="mt-6 lg:mt-8 flex flex-col sm:flex-row gap-3">
 
                            <input
     value={question}
@@ -184,13 +186,13 @@ const askQuestion = async () => {
         }
     }}
     placeholder="Ask about production..."
-    className="flex-1 rounded-lg p-3 text-white bg-black border border-green-500"
+    className="flex-1 rounded-lg p-3 text-white bg-black border border-green-500 min-w-0"
 />
 
 <button
     onClick={askQuestion}
     disabled={chatLoading}
-    className="bg-green-600 px-5 rounded-lg disabled:opacity-50"
+    className="bg-green-600 px-5 py-3 sm:py-0 rounded-lg disabled:opacity-50 shrink-0"
 >
     Send
 </button>
