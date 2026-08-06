@@ -9,13 +9,16 @@ const DISPATCH_ELIGIBLE_STATUSES = new Set(["certified", "partially_dispatched"]
 
 export default function Batches() {
     const navigate = useNavigate();
+    const [plantFilter, setPlantFilter] = useState("");
+    const [yieldFilter, setYieldFilter] = useState("");
     const [batches, setBatches] = useState([]);
     const [search, setSearch] = useState("");
+    const plants = [...new Set(batches.map(b => b.plant))];
     const [editingBatch, setEditingBatch] = useState(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletingBatch, setDeletingBatch] = useState(null);
-
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectionMode, setSelectionMode] = useState(null);
     const [selectedBatchId, setSelectedBatchId] = useState(null);
 
@@ -105,15 +108,37 @@ export default function Batches() {
             setSelectedBatchId(batch._id);
         } 
     };
+    const filteredBatches = batches.filter(batch => {
+    const plantMatch =
+        !plantFilter || batch.plant === plantFilter;
+
+    const yieldMatch =
+        !yieldFilter ||
+        (
+            yieldFilter === "low" &&
+            batch.yield.quantity < 100
+        ) ||
+        (
+            yieldFilter === "medium" &&
+            batch.yield.quantity >= 100 &&
+            batch.yield.quantity <= 500
+        ) ||
+        (
+            yieldFilter === "high" &&
+            batch.yield.quantity > 500
+        );
+
+    return plantMatch && yieldMatch;
+});
 
    const displayedBatches =
     selectionMode === "certificate"
-        ? batches.filter((b) => b.status === "pending")
+        ? filteredBatches.filter((b) => b.status === "pending")
         : selectionMode === "dispatch"
-        ? batches.filter((b) => DISPATCH_ELIGIBLE_STATUSES.has(b.status))
+        ? filteredBatches.filter((b) => DISPATCH_ELIGIBLE_STATUSES.has(b.status))
         : selectionMode === "viewcert"
-        ? batches.filter((b) => CERT_ELIGIBLE_STATUSES.has(b.status))
-        : batches;
+        ? filteredBatches.filter((b) => CERT_ELIGIBLE_STATUSES.has(b.status))
+        : filteredBatches;
 
     const statusLabel = (status) =>
         status === "partially_dispatched" ? "Partially Dispatched"
@@ -138,7 +163,7 @@ export default function Batches() {
 
                     {/* SEARCH ROW */}
                     <div className="grid grid-cols-5 gap-2 mt-5 w-full max-w-4xl">
-                        <button
+                        <button  onClick={() => setIsFilterOpen(true)}
                             className="text-2xl text-white bg-green-700/70 w-full col-span-1 font-prompt rounded-2xl max-md:text-sm
                             hover:animate-pulse hover:bg-pink-700/70 transition-all duration-200"
                         >
@@ -404,6 +429,112 @@ export default function Batches() {
                 </div>
             </Modal>
         </div>
+        <Modal
+    isOpen={isFilterOpen}
+    onClose={() => setIsFilterOpen(false)}
+>
+    <span 
+    onClick={() => setIsFilterOpen(false)}
+    className="material-symbols-outlined cursor-pointer">
+        close
+        </span>
+    <div className="w-full max-w-md font-prompt text-white">
+        <h2 className="text-2xl text-center mb-6">
+            Filter Batches
+        </h2>
+
+        {/* Plant */}
+        <div className="mb-5">
+            <label className="block mb-2 text-green-300">
+                Plant
+            </label>
+
+            <select
+                value={plantFilter}
+                onChange={(e) => setPlantFilter(e.target.value)}
+                className="
+                    w-full
+                    rounded-xl
+                    bg-gray-800
+                    border border-green-600
+                    px-4
+                    py-2
+                    outline-none
+                    focus:border-green-400
+                "
+            >
+                <option value="">All Plants</option>
+
+                {plants.map((plant) => (
+                    <option
+                        key={plant}
+                        value={plant}
+                    >
+                        {plant}
+                    </option>
+                ))}
+            </select>
+        </div>
+
+        {/* Yield */}
+        <div className="mb-6">
+            <label className="block mb-2 text-green-300">
+                Yield
+            </label>
+
+            <select
+                value={yieldFilter}
+                onChange={(e) => setYieldFilter(e.target.value)}
+                className="
+                    w-full
+                    rounded-xl
+                    bg-gray-800
+                    border border-green-600
+                    px-4
+                    py-2
+                    outline-none
+                    focus:border-green-400
+                "
+            >
+                <option value="">All</option>
+                <option value="low">Below 100 ml</option>
+                <option value="medium">100 - 500 ml</option>
+                <option value="high">Above 500 ml</option>
+            </select>
+        </div>
+
+        <div className="flex justify-end gap-3">
+            <button
+                onClick={() => {
+                    setPlantFilter("");
+                    setYieldFilter("");
+                }}
+                className="
+                    px-4
+                    py-2
+                    rounded-xl
+                    bg-gray-600
+                    hover:bg-gray-500
+                "
+            >
+                Clear
+            </button>
+
+            <button
+                onClick={() => setIsFilterOpen(false)}
+                className="
+                    px-4
+                    py-2
+                    rounded-xl
+                    bg-green-700
+                    hover:bg-green-600
+                "
+            >
+                Apply
+            </button>
+        </div>
+    </div>
+</Modal>
         </>
     );
 }

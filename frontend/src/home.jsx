@@ -10,7 +10,7 @@ export default function Home(){
         <>
 <div className="relative m-4">
     <video
-        className="w-full h-150 max-md:w-full max-md:h-[60vh] object-cover rounded-2xl block brightness-80 dark:brightness-50"
+        className="w-full h-150 max-md:w-full max-md:h-[60vh] object-cover rounded-2xl block brightness-80 dark:brightness-50 shadow-[0px_0px_32px_0px_rgba(0,0,0,0.9)]"
         src="/content/hero-video-2.mp4"
         autoPlay
         loop

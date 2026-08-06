@@ -65,7 +65,7 @@ export default function Signup() {
         title={
           <div className="flex items-center gap-2">
             Create an Account
-            <span className="material-symbols-outlined bg-green-300 text-white rounded-full p-2 text-[32px] lg:text-[40px]">
+            <span className="material-symbols-outlined bg-green-300 text-white rounded-full p-2 text-[20px]! lg:text-[30px]!">
               how_to_reg
             </span>
           </div>
@@ -213,7 +213,7 @@ export default function Signup() {
        <div className="max-w-md text-white">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
-            <span className="material-symbols-outlined text-pink-400 text-[50px]">
+            <span className="material-symbols-outlined text-pink-400 text-[50px]!">
               local_florist
             </span>
             <Link to="/">
