@@ -5,8 +5,8 @@ export default function Features() {
     return (
         <>
             <div className='
-                m-10 
-                max-md:m-2 
+                my-10 
+                max-md:my-2 
                 bg-black/60 
                 dark:bg-gray-900/60
                 p-4 
@@ -34,12 +34,20 @@ export default function Features() {
 
                <div className="flex justify-center">
   <div className="
-      grid grid-cols-2 
-      gap-10 
-      max-md:grid-cols-2 
+       w-full
+      max-w-7xl
+      px-6
+      md:px-8
+      lg:px-10
+
+      grid
+      grid-cols-2
+      gap-6
+      lg:gap-10
+
+      max-md:grid-cols-2
       max-md:gap-4
-      max-md:px-1
-      w-fit
+      max-md:px-2
   ">
 
     <Card

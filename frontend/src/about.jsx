@@ -5,11 +5,11 @@ export default function About(){
     return(
         <>
         <div className='
-            m-10 
-            max-md:m-2 
+            my-10 
+            max-md:my-2 
             bg-pink-200 
             dark:bg-pink-800/50
-            p-4 
+            p-5
             max-md:px-3 max-md:py-2 
             rounded-2xl
         '>
@@ -39,12 +39,16 @@ export default function About(){
             max-md:gap-3
         '>
             <p className='
-                w-1/2 
-                max-md:w-full 
-                ml-5 
-                max-md:ml-0 
-                text-2xl 
-                max-md:text-sm 
+                w-3/5
+                max-lg:w-1/2
+                max-md:w-full
+
+                text-xl
+                lg:text-2xl
+                max-lg:text-lg
+                max-md:text-sm
+
+                leading-relaxed
                 font-prompt 
                 dark:text-green-400
                 text-green-600
@@ -57,17 +61,23 @@ export default function About(){
 
             {/* IMAGE CARD */}
             <div className="
-                max-md:w-full 
-                max-md:flex 
-                max-md:justify-center   
+               w-2/5
+                max-lg:w-1/2
+                max-md:w-full
+
+                flex
+                justify-center
+                px-4
             ">
-                <Card>
-                    <img 
-                        className="rounded-2xl w-full" 
-                        src="/content/yellow-photo.jpg" 
-                        alt="about"
-                    />
-                </Card>
+                <div className="w-full max-w-md">
+                    <Card>
+                        <img
+                            className="rounded-2xl w-full"
+                            src="/content/yellow-photo.jpg"
+                            alt="about"
+                        />
+                    </Card>
+                </div>
             </div>
 
         </div>
